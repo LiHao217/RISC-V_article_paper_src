@@ -1,0 +1,13 @@
+vbox配置bridged上网模式，从eth0的DHCP上网
+apt-get update
+apt-get install gcc g++
+安装vbox扩展
+openssh-server
+vim-gtk
+安装build tool chain所需要的几个gcc相关的包
+git clone riscv和ucb-bar的几个代码库。rocket-chip是顶层，下面有riscv-tools等目录，riscv-tools下面还有几个目录
+apt-get install openjdk-7-jre
+apt-get install scala
+apt-get install sbt (按照sbt网站上的指示）
+拷贝编译好的tool chain，或者从头编译tool chain
+在emulator和vsim目录下make，sbt首次运行会下载一大堆jar

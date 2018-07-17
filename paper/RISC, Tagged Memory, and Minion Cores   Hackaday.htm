@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html itemscope="itemscope" itemtype="http://schema.org/Article" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="google-site-verification" content="dQIcgy2eQ8-zyE6l15aOsCdxiVDUKl84C_zi-lJivYE" />
+<title>RISC, Tagged Memory, and Minion Cores | Hackaday</title>
+<script>document.documentElement.className = "js"</script>
+
+<link rel="shortcut icon" href="https://s0.wp.com/wp-content/themes/vip/hackaday-2/favicon.ico" />
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="http://hackaday.com/xmlrpc.php">
+<link href="http://google.com/+hackaday" rel="publisher" />
+
+<!--[if lt IE 9]>
+    <script src="https://s0.wp.com/wp-content/themes/vip/hackaday-2/js/html5.js"></script>
+<![endif]-->
+
+		<script src='https://r-login.wordpress.com/remote-login.php?action=js&amp;host=hackaday.com&amp;id=4779443&amp;t=1423874900&amp;back=http%3A%2F%2Fhackaday.com%2F2014%2F12%2F21%2Frisc-tagged-memory-and-minion-cores%2F' type="text/javascript"></script>
+		<script type="text/javascript">
+		/* <![CDATA[ */
+			if ( 'function' === typeof WPRemoteLogin ) {
+				document.cookie = "wordpress_test_cookie=test; path=/";
+				if ( document.cookie.match( /(;|^)\s*wordpress_test_cookie\=/ ) ) {
+					WPRemoteLogin();
+				}
+			}
+		/* ]]> */
+		</script>
+		<link rel="alternate" type="application/rss+xml" title="Hackaday &raquo; Feed" href="http://hackaday.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Hackaday &raquo; Comments Feed" href="http://hackaday.com/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Hackaday &raquo; RISC, Tagged Memory, and Minion Cores Comments Feed" href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/feed/" />
+<script type="text/javascript">
+/* <![CDATA[ */
+function addLoadEvent(func){var oldonload=window.onload;if(typeof window.onload!='function'){window.onload=func;}else{window.onload=function(){oldonload();func();}}}
+/* ]]> */
+</script>
+<link rel='stylesheet' id='all-css-0' href='https://s2.wp.com/_static/??-eJx9jl0OwjAMgy9EiTZN/DwgzlK60GVLm2rtQLs9LQgEAvZmR59jwzUoIz6hT+AmFXiy5CMwDRihxxS0GdTdrU2MK/iNGxkx313QqRAOW9LI6DK2FHNh80wV2eWu75rU5T8RLhSgALrVs6ohppnxwRJ4SZTx+BJLpRZFsRidSPyHUWfWNC5FRzyx2CwtZOrN/hvdNWBZTpoLcHSHqqmrervfNVV/A1V0i3A=' type='text/css' media='all' />
+<script type='text/javascript'>
+/* <![CDATA[ */
+var SafeCommentsAjax = {"ajaxurl":"http:\/\/hackaday.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://s2.wp.com/_static/??-eJyFz1EOwjAIBuAL2XVbdG/Gs9TJKnW0tbSbenrRaKLRZE8k8MEf9BxVH3wGn7VjTWGPI6jCkIyVnkI/hMrxSotD34/lAPyA7lwgXV9lEShCm0yGitC/8UdqDJwJmCXyz/Q7Cv2EMC8yBzma/qQSMN5+ruYjSJ6eMOo4FoueNZsBRMeQsjAiYc8/jDMXWd/RtlnXXbOpu7Z1dzMXc6c='></script>
+<link rel='stylesheet' id='all-css-0' href='https://s2.wp.com/wp-content/mu-plugins/highlander-comments/style.css?m=1377793621g' type='text/css' media='all' />
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s2.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563g&#038;ver=20110606' type='text/css' media='all' />
+<![endif]-->
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://hackadaycom.wordpress.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s1.wp.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Beating the Skins of Oatmeal Tins' href='http://hackaday.com/2014/12/21/beating-the-skins-of-oatmeal-tins/' />
+<link rel='next' title='Plug Into USB, Get a Reverse Shell' href='http://hackaday.com/2014/12/21/plug-into-usb-get-a-reverse-shell/' />
+<meta name="generator" content="WordPress.com" />
+<link rel='canonical' href='http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/' />
+<link rel='shortlink' href='http://wp.me/pk3lN-AQq' />
+<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=json&amp;url=http%3A%2F%2Fhackaday.com%2F2014%2F12%2F21%2Frisc-tagged-memory-and-minion-cores%2F&amp;for=wpcom-auto-discovery" /><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=xml&amp;url=http%3A%2F%2Fhackaday.com%2F2014%2F12%2F21%2Frisc-tagged-memory-and-minion-cores%2F&amp;for=wpcom-auto-discovery" /><link rel='openid.server' href='http://hackadaycom.wordpress.com/?openidserver=1' />
+<link rel='openid.delegate' href='http://hackadaycom.wordpress.com/' />
+<link rel="search" type="application/opensearchdescription+xml" href="http://hackaday.com/osd.xml" title="Hackaday" />
+<link rel="search" type="application/opensearchdescription+xml" href="http://wordpress.com/opensearch.xml" title="WordPress.com" />
+<meta property="og:title" content="RISC, Tagged Memory, and Minion Cores" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://hackadaycom.files.wordpress.com/2014/12/lowrisc.png?w=600&amp;h=600" />
+<meta property="og:url" content="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/" />
+<meta property="og:description" content="Buy a computing device nowadays, and you&#039;re probably getting something that knows x86 or an ARM. There&#039;s more than one architecture out there for general purpose computing with dual-core MIPS boards a..." />
+<meta property="og:site_name" content="Hackaday" />
+
+<link rel="image_src" href="https://hackadaycom.files.wordpress.com/2014/12/lowrisc.png?w=600&amp;h=600"/>
+<meta itemprop="name" content="RISC, Tagged Memory, and Minion Cores">
+<meta itemprop="description" content="Buy a computing device nowadays, and you&#039;re probably getting something that knows x86 or an ARM. There&#039;s more than one architecture out there for general purpose computing with dual-core MIPS boards a...">
+<meta itemprop="image" content="https://hackadaycom.files.wordpress.com/2014/12/lowrisc.png?w=600&amp;h=600">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@hackaday">
+	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+		<style type="text/css">
+			.recentcomments a {
+				display: inline !important;
+				padding: 0 !important;
+				margin: 0 !important;
+			}
+
+			table.recentcommentsavatartop img.avatar, table.recentcommentsavatarend img.avatar {
+				border: 0px;
+				margin: 0;
+			}
+
+			table.recentcommentsavatartop a, table.recentcommentsavatarend a {
+				border: 0px !important;
+				background-color: transparent !important;
+			}
+
+			td.recentcommentsavatarend, td.recentcommentsavatartop {
+				padding: 0px 0px 1px 0px;
+				margin: 0px;
+			}
+
+			td.recentcommentstextend {
+				border: none !important;
+				padding: 0px 0px 2px 10px;
+			}
+
+			.rtl td.recentcommentstextend {
+				padding: 0px 10px 2px 0px;
+			}
+
+			td.recentcommentstexttop {
+				border: none;
+				padding: 0px 0px 0px 10px;
+			}
+
+			.rtl td.recentcommentstexttop {
+				padding: 0px 10px 0px 0px;
+			}
+		</style>
+		<meta name="application-name" content="Hackaday" /><meta name="msapplication-window" content="width=device-width;height=device-height" /><meta name="msapplication-tooltip" content="Fresh hacks every day" /><meta name="msapplication-task" content="name=Subscribe;action-uri=http://hackaday.com/feed/;icon-uri=http://0.gravatar.com/blavatar/4f3e6b6daa090af416a1ba595885efd1?s=16" /><style type="text/css" id="syntaxhighlighteranchor"></style>
+		<link rel="stylesheet" id="custom-css-css" type="text/css" href="https://s0.wp.com/?custom-css=1&#038;csblog=k3lN&#038;cscache=6&#038;csrev=60" />
+		
+<script src="//use.typekit.net/mpm6gph.js"></script>
+<script>try{Typekit.load();}catch(e){}</script>
+<!-- Supplyframe Ads -->
+<!--<script type='text/javascript' src='http://ads.supplyframe.com/openads/www/delivery/spcjs.php?id=31&amp;block=1'></script>-->
+<script type='text/javascript'>
+function OA_show(e){if(typeof OA_output[e]=="undefined"){return}else{document.write(OA_output[e])}}function OA_showpop(e){zones=window.OA_zones?window.OA_zones:false;var t=e;if(typeof window.OA_zones!="undefined"){if(typeof zones[e]=="undefined"){return}t=zones[e]}var n="<"+"script type='text/javascript' ";n+="src='"+OA_p+"?zoneid="+t;n+="&source="+escape(OA_source)+"&r="+OA_r;OA_spc+="&amp%3Bblock=1";if(window.location)n+="&loc="+escape(window.location);if(document.referrer)n+="&referer="+escape(document.referrer);n+="'><"+"/script>";document.write(n)}if(typeof OA_zones!="undefined"){var OA_zoneids="";for(var zonename in OA_zones)OA_zoneids+=escape(zonename+"="+OA_zones[zonename]+"|");OA_zoneids+="&nz=1"}else{var OA_zoneids=escape("426|427|428|429|468")}if(typeof OA_source=="undefined"){OA_source=""}var OA_p=location.protocol=="https:"?"https://ads.supplyframe.com/openads/www/delivery/spc.php":"http://ads.supplyframe.com/openads/www/delivery/spc.php";var OA_r=Math.floor(Math.random()*99999999);OA_output=new Array;var OA_spc="<"+"script type='text/javascript' ";OA_spc+="src='"+OA_p+"?zones="+OA_zoneids;OA_spc+="&source="+escape(OA_source)+"&r="+OA_r;OA_spc+="&amp%3Bblock=1";OA_spc+=document.charset?"&charset="+document.charset:document.characterSet?"&charset="+document.characterSet:"";if(window.location)OA_spc+="&loc="+escape(window.location);if(document.referrer)OA_spc+="&referer="+escape(document.referrer);OA_spc+="'><"+"/script>";document.write(OA_spc);var OA_fo="";OA_fo+="<"+"script type='text/javascript' src='http://ads.supplyframe.com/openads/www/delivery/fl.js'><"+"/script>\n";document.write(OA_fo);
+</script>
+
+</head>
+
+<body class="single single-post postid-141634 single-format-standard custom-background mp6 typekit-enabled customizer-styles-applied group-blog highlander-enabled highlander-light">
+<div id="page" class="hfeed site">
+
+    <div id="leaderboard">
+        <script type='text/javascript'>
+            /* [id426] 728x90 */
+            OA_show(426);
+        </script>
+    </div>
+
+    <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+    <header id="masthead" class="site-header" role="banner">
+        <div class="site-branding">
+            <a href="http://hackaday.com/" rel="home">
+                <img src="https://s0.wp.com/wp-content/themes/vip/hackaday-2/img/logo.png" alt="Logo" class="logo-img">
+            </a>
+            <h1 class="site-title">
+                <a href="http://hackaday.com/" rel="home">Hackaday</a>
+            </h1>
+        </div>
+
+        <button class="menu-toggle"><span class="icon icon-navbar-toggle">Primary Menu</span></button>
+
+        <nav id="site-navigation" class="main-navigation" role="navigation">
+            <div class="menu-main-container"><ul id="menu-main" class="menu"><li id="menu-item-90201" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-90201"><a href="http://www.hackaday.com/">Home</a></li>
+<li id="menu-item-136904" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-136904"><a href="http://hackaday.com/blog/">Blog</a></li>
+<li id="menu-item-115276" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-115276"><a href="http://hackaday.io?from=had&#038;utm_source=hackaday&#038;utm_medium=menu&#038;utm_campaign=blog">Community</a></li>
+<li id="menu-item-97770" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97770"><a href="http://store.hackaday.com?from=had&#038;utm_source=hackaday&#038;utm_medium=menu&#038;utm_campaign=blog">Store</a></li>
+<li id="menu-item-136905" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-136905"><a href="http://www.youtube.com/user/hackaday/videos">Video</a></li>
+<li id="menu-item-77211" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-77211"><a href="http://hackaday.com/submit-a-tip/">Submit</a></li>
+<li id="menu-item-101802" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-101802"><a href="http://hackaday.com/about/">About</a></li>
+</ul></div>		<aside id="hackaday_calendar-2" class="widget widget_hackaday_calendar"><div id="hackaday_calendar_wrap"><label class="calendar_current_time">February 13, 2015</label><div class="calendar_table_wrap"><table id="wp-calendar">
+	<caption>December 2014</caption>
+	<thead>
+	<tr>
+		<th scope="col" title="Sunday">S</th>
+		<th scope="col" title="Monday">M</th>
+		<th scope="col" title="Tuesday">T</th>
+		<th scope="col" title="Wednesday">W</th>
+		<th scope="col" title="Thursday">T</th>
+		<th scope="col" title="Friday">F</th>
+		<th scope="col" title="Saturday">S</th>
+	</tr>
+	</thead>
+
+	<tfoot>
+	<tr>
+		<td colspan="3" id="prev"><a href="http://hackaday.com/2014/11/">&laquo; Nov</a></td>
+		<td class="pad">&nbsp;</td>
+		<td colspan="3" id="next"><a href="http://hackaday.com/2015/01/">Jan &raquo;</a></td>
+	</tr>
+	</tfoot>
+
+	<tbody>
+	<tr>
+		<td colspan="1" class="pad">&nbsp;</td><td><a href="http://hackaday.com/2014/12/01/" title="3D Printing Atomic Force Microscopy
+3D-Printed Clock Tells Time with Gears
+Home Automation Setup Keeps You Informed
+A Z80 Computer With Switches And Blinkenlights
+Astrophotography and Data-Analysis Sense Exoplanets
+Christmas Lights And Ships In A Bottle
+$15 Car Stereo Bluetooth Upgrade
+3D Printing Lock Picks">1</a></td><td><a href="http://hackaday.com/2014/12/02/" title="Finding a Cheaper USB to Serial Chips
+Illumination Captured in a Vacuum Jar
+Yet Another Awesome Working Prototype of a PipBoy 3000
+Retrotechtacular: Ma Bell&#8217;s Advanced Mobile Phone Service (AMPS)
+Trinket Everyday Carry Contest Roundup: Sniffing Trinket and Portable Trollmaster 3000!
+A Wooden LED Matrix Coffee Table
+Trinket Everyday Carry Contest Drawing #1 Results
+Kentucky-Fried Induction Furnace">2</a></td><td><a href="http://hackaday.com/2014/12/03/" title="Extremely Detailed FMCW Radar Build
+Popular Electronics Magazine Archive Online
+Fixing An NES For Good
+Scope Noob: Bridge Rectifier
+Pico-Kubik Quadruped Fits in the Palm of your Hand
+Geopolymer Concrete, Perfecting Roman Technology Today
+Philly Fixers Guild Will Teach You How to Fish
+Happy Meal Hack Produces a Google Cardboard Test">3</a></td><td><a href="http://hackaday.com/2014/12/04/" title="Serial Camera, Courtesy of the STM32F4
+Cutting Glass With CNC
+Flash Memory Endurance Testing
+[Amazing Science&#8217;s] Simple Electric Train
+Hacking PayPal Accounts With CSRF
+Generating Laser Cut Boxes in C
+Motion Through Time Painted in Light
+MicroDMA and LEDs">4</a></td><td><a href="http://hackaday.com/2014/12/05/" title="Chinese Temperature/Humidity Sensor is Easily Hacked
+Fixing A Multimeter&#8217;s Serial Interface
+Making Embedded GUI&#8217;s Without Code
+Hacklet 25 &#8211; ESP8266 WiFi Module Projects
+HackRF Blue
+E-Waste Printer Looks Nice, Prints Really, Really Small
+Computer Built into a Board Uses Only 10 Watts
+SpoofedMe Attack Steals Accounts by Exploiting Social Login Mechanisms">5</a></td><td><a href="http://hackaday.com/2014/12/06/" title="A Web Connected Seismometer
+Prints In Space (Said In &#8220;Pigs In Space&#8221; Voice)
+This Message will Self Destruct&#8230; as You Read It?
+Extending The Range Of An Electric Bike
+Chaos Computer Club (and Hackaday) Blocked By British Porn Filters
+Cordless Drill Turned Into Bicycle-Powered Generator
+Scanning On The Cheap
+Raspberry PiPhone Thermostat Monitors Your Entire House &#8212; Or At Least That&#8217;s The Plan">6</a></td>
+	</tr>
+	<tr>
+		<td><a href="http://hackaday.com/2014/12/07/" title="Amazon Fire TV Update Bricks Hacked Devices
+An ATtiny Boost Converter
+An Expanding Wooden Table
+8 Bit Message in a Digital Bottle
+Kid Designs His Own Prosthetic Arm at a Summer Camp
+Hackaday Links: December 7, 2014
+Bad Code Results in Useless Passwords
+Chaos Theory in Practice: Chua&#8217;s Circuit">7</a></td><td><a href="http://hackaday.com/2014/12/08/" title="Calculator + MSP430 + IR LED = TV Remote?
+Crosswalk Pong Auf Deutschland
+Saving The Planet One Flush At A Time
+The Last Week Of The Mooltipass Approacheth
+Compiling Your Own Programs For The ESP8266
+EDC CONTEST ROUNDUP: Musician&#8217;s Assistant AND BitMasher!
+Making T-Glase Crystal Clear
+An MSP430-based Automatic Fish Feeder
+Ephemeral Photographs Staged with Artful Inventions">8</a></td><td><a href="http://hackaday.com/2014/12/09/" title="Overhauling a 3-Zone Reflow Oven
+Clap On! A Breadboard
+Scope Noob: Microcontroller Quirks with DDS
+Retrotechtacular: Supersonic Transport Initiatives
+A Calculator with Free Software and Open Hardware
+12 Mbps Communication Between A PC and MCU
+Digging into the APA102 Serial LED Protocol
+Trinket Everyday Carry Contest Drawing #2 Results">9</a></td><td><a href="http://hackaday.com/2014/12/10/" title="The Epoch Christmas Tree
+Reverse Engineering the Proto X Quadcopter Radio
+Yik Yak MITM Hack (Give the Dog a Bone)
+Vintage Apple Keyboard Revived As Standalone Computer
+PeriUSBoost: A DIY USB Battery Pack
+Casting Engagement Rings (Or Other Small Metal Parts!)
+Dead Simple Hack Allows for &#8220;Rebel&#8221; Keurig K-Cups
+The ERIC-1 Microcomputer">10</a></td><td><a href="http://hackaday.com/2014/12/11/" title="Building a Portable Ham Radio Station
+Reverse Engineering Super Animal Cards
+Fail of the Week: Teddy Top and Fourteen Fails
+Reverse-Engineering a Game Boy Clone&#8217;s Boot ROM
+Over-engineering Ding Dong Ditch
+Using the Oculus Rift as a Multi-Monitor Replacement
+Quadcopter Beer Delivery System
+Raspberry Pi Powered Super Digital Photo Frame">11</a></td><td><a href="http://hackaday.com/2014/12/12/" title="Online Altair 8800 Clone Lets You Play Zork
+Making MicroView Wordy
+Mill Warped PCB Blanks On An Uneven Bed
+Hacklet 26 &#8211; Arduino Projects
+We&#8217;re Hiring a Full-Time Hackaday Prize Mythical Creature
+Reverse Engineering Capcom&#8217;s Crypto CPU
+A Simple Hoverboard Everyone Can Understand
+Robot Vision: Detecting Obstacles with FPGAs and line lasers
+2014 Advent Calender of Circuits">12</a></td><td><a href="http://hackaday.com/2014/12/13/" title="USB On The Teensy 3 From The Ground Up
+Sleek Desk Lamp Changes Colors Based on Sun Position
+3D Printed Lenses Open Up Possibilities
+Logic Simulator Atanua Goes Free, Possibly Open Source
+Tripping on Oscilloshrooms With an Analog Scope
+MIDI Keyboard with Frickin&#8217; Laser Keys
+1.37&#8243; CRT Restored by Hacklab for Miniature MAME Cabinet
+Simple and Elegant Single Digit Nixie Tube Clock">13</a></td>
+	</tr>
+	<tr>
+		<td><a href="http://hackaday.com/2014/12/14/" title="Redlining Your CPU via Automotive Tachometer
+Sqonkbox 55 is a Cigar Box Organ of Awesome
+Downloading Data Through The Display
+Improving A Modern Instant Camera
+EPROM Coffee Table
+Hackaday Links: December 14, 2014
+Taste the Rainbow One Color at a Time
+DIY Chicken Feed Indicator Tells You When To Feed The Chickens">14</a></td><td><a href="http://hackaday.com/2014/12/15/" title="Gift Your Next Robot With the Brain of a Roundworm
+Making A Paintball Gun from Scratch
+Reverse Engineering a Robotic Arm
+Home Computers Behind The Iron Curtain
+Trinket EDC Contest Entry: Shame On You!
+Meet Registroid &#8211; Mutant Cash Register Music Sequencer
+DIY Video Microscope Used For Soldering SMD Parts
+Using Lasers for Hair Growth">15</a></td><td><a href="http://hackaday.com/2014/12/16/" title="Boy Off The Grid For Years Writes GUI for DOS
+Create an Inclinometer Using a Raspberry Pi
+FPGA Ambilight Clone Packs a Ton of Features
+Retrotechtacular: Pipeline to the Arctic
+UAV Coaxial Copter Uses Unique Drive Mechanism
+Battery Basics &#8211; Choosing a Battery for Your Project
+DRM Protection Removed for&#8230; Coffee?
+Trinket EDC Contest Drawing #3 Results">16</a></td><td><a href="http://hackaday.com/2014/12/17/" title="ESP Gets FCC and CE
+Tiptoe Through the Tulips in No Time With Ukule-LED
+The Most Minimal WS2812B Driver
+Lumographic Images Created With Lens Only
+Drawing On Glow In The Dark Surfaces With Lasers
+Derby&#8217;s Got Legs, He Knows How to Use Them
+SingLock Protects Your Valuables from Shy People
+Repairing A Router Plagued By Capacitors">17</a></td><td><a href="http://hackaday.com/2014/12/18/" title="Edge-Lit Clear Plastic Bike Combines Nighttime Riding Safety With Aurora Borealis Flair
+Towards More Interesting Instant Cameras
+Meme Themed Pinball Machine &#8211; Much Flipping, Y U No Win?!
+Wire Wrap 101
+Counting Transistors In The Playstation
+Crypto Photography and Custom Firmware
+Touching Light with Haptic Feedback
+Hobbit Sword Glows Blue, Vanquishes Unprotected Wifi">18</a></td><td><a href="http://hackaday.com/2014/12/19/" title="&#8216;Gibson Girl&#8217; emergency beacon built from a Wind-Up Flashlight
+Yule-Inspired Tool Time With [Becky Stern]
+Amateur Builds Super Deep Super Cheap Ocean Vehicle
+Towards the Perfect Coin Flip: The NIST Randomness Beacon
+Hacklet 27 – Holiday Hacks
+TRINKET EDC CONTEST ENTRY: Lazydoro
+Multiplexing Pi Cameras
+Arduino Thermostat Includes Vacation Mode">19</a></td><td><a href="http://hackaday.com/2014/12/20/" title="Brother Builds &#8220;Zerg-Berg&#8221; Coffee Table Media Server &#8211; 38(!) USB Drives
+One Man&#8217;s Mini Symphony of Many Strings
+DIY Bicycle Roller Helps Cure The Winter Blues
+Right Hand Loses Job As Head-Mouse Enters Mousing Arena
+First Ever Parts Emailed to Space
+Santa&#8217;s Autonomous Helping Hands Let the Jolly ol&#8217; Fellow Kick Back this Season
+Electronic Glove Detects Sign Language
+Is This Power Supply Bigger Than A Bread Box? No, It Is One.">20</a></td>
+	</tr>
+	<tr>
+		<td><a href="http://hackaday.com/2014/12/21/" title="World&#8217;s First Smart Snowboard Changes Music According To Your Actions
+Beating the Skins of Oatmeal Tins
+RISC, Tagged Memory, and Minion Cores
+Plug Into USB, Get a Reverse Shell
+Boxing Trainer Uses DIY Force Sensors
+Hackaday Links: December 21, 2014
+iRobot Releases Hackable Roomba &#8212; Without The Vacuum
+Old-Timey MP3 Player Blends Old Styling With New Technology">21</a></td><td><a href="http://hackaday.com/2014/12/22/" title="Sheet Music to MIDI Converter
+A Year Long Time Lapse Camera
+Green-Sweep for Your Ultrasonic Rangefinder
+$50k in Components Hit the Hands of Hackaday Prize Semifinalists
+The Heathkit Mystery
+Micro Tesla Coil makes a Perfect Stocking Stuffer
+Developing Film With Lego
+Smart CPR Dummy Makes Sure you Do it Right
+ZX81 Emulated on an mbed">22</a></td><td><a href="http://hackaday.com/2014/12/23/" title="Hate Blue M&amp;M&#8217;s? Sort Them Using the Power of an iPhone!
+Rewritable ROM for the Mac Plus
+Ask Hackaday: Stopping The Stingray
+Retrotechtacular: Pascal Got Frustrated at Tax Time, Too
+Arduino Plays White Tiles On Your Mobile Touchscreen
+HamRadioTweets Gets the Word Out
+Real-Time Thermal Projection Saves Your Tastebuds from the Hot Stuff
+TRINKET EDC CONTEST DRAWING #4 RESULTS">23</a></td><td><a href="http://hackaday.com/2014/12/24/" title="An OLED Ring for Bluetooth Notifications
+Fan-tastic Box Fan Computer Fan
+Website Response Speedometer
+Home Automation With The Amazon Echo
+Accelerometers Are Actually Quite Simple
+Capacitive Christmas Organ with Living Lenses of Slappable Light
+Trinket EDC Contest Entry: Can I Borrow a Feeling?
+WiFi Lamp Challenge &#8211; 5 Hour Speedrun">24</a></td><td><a href="http://hackaday.com/2014/12/25/" title="Secret Attic Library Door
+8-Bit Chip Rocks 16-Bit 44.1kHz Tunes
+What is this thing called Linux?
+Student Trolls Anti-Arduino Prof With Parasite MCU
+Writing A Virtual Machine In Excel
+Making a Player Piano Talk MIDI
+Laser-Etch Stainless with Only Plaster &amp; Alcohol
+Selfie-Bots Will Take Your Best Shots For You">25</a></td><td><a href="http://hackaday.com/2014/12/26/" title="RGB Bike Rim Lights
+Dual Porting a C64 Flash Cart
+The Four Thousand Dollar MP3 Player
+Ambilight for your Piano (Hero)
+Weird Clocks and a Two Chip Apple I
+Christmas Village Spin on the Weasley Clock
+Pandaphone is a DIY Baby Toy
+Dremel Powered Duplicating Carving Machine">26</a></td><td><a href="http://hackaday.com/2014/12/27/" title="Hanging Monitors Keeps Your Desk Slightly Less Messy
+Learning I2C with the Bus Pirate
+DIY Conveyor Gets You From Here To There
+NeXT Cubes And LCD Monitors
+31st Chaos Communications Congress
+DIY Thickness Sander Is Good Enough For A Guitar Shop
+Coffee Payment System Doesn&#8217;t Void Your Warranty
+Robotically-Tuned Tube Radio">27</a></td>
+	</tr>
+	<tr>
+		<td><a href="http://hackaday.com/2014/12/28/" title="Class D Amp with an H-Bridge
+Offset Unicycle Built Mostly from a Single Bicycle
+Turn on your computer from anywhere with an Arduino Server
+Captain Hermano&#8217;s Mystery Box is Full of Puzzles
+Pendulum Music for Oscilloscope and Photodiodes
+Hackaday Links: The Last One Of 2014
+College Researcher Makes Supercomputer from 420 PS3s
+Project Binky, Putting a Celica in a Mini The Hard Way">28</a></td><td><a href="http://hackaday.com/2014/12/29/" title="What is the Matrix&#8230;Clock?
+Ingenious Filament Spool Holder Keeps Your 3D Printer Printing
+Demodulating BPSK31 With OpAmps and 555s
+DIY Super Accessory For Your Dremel
+Trinket EDC Contest Entry: Shorty
+Ultimate Oscilloscope Hack &#8211; Quake in Realtime
+Bike Rim Lighting Lets the Night Crowd Know When You&#8217;re Rollin&#8217;
+Reading Power Use Data with a Webcam and Python">29</a></td><td><a href="http://hackaday.com/2014/12/30/" title="Z80, CP/M, And FAT File Formats
+Bringing A Legacy Pager Network Back to Life
+Game Boy Cartridge Emulator Uses STM32
+[Sophi Kravitz] Joins the Hackaday Crew
+Retrotechtacular: Principles of Hydraulic Steering
+New 3D Printing Technique &#8211; Friction Welding
+Flashing Chips With A CNC
+TRINKET EDC CONTEST DRAWING #5 RESULTS">30</a></td><td><a href="http://hackaday.com/2014/12/31/" title="Reflowing an Entire MacBook Pro
+Small, Detailed Nixie Clock Build
+Hacking Education; Project-Based Learning Trumps the Ivory Tower
+This One May Come as a Shock to Some
+Bisected Engine Makes Cute Lamp &#8211; Still Cranks
+3D Printed SMD Tool
+Running Nintendo DS Unsigned Code With Audio
+This Cake is Not a Lie">31</a></td>
+		<td class="pad" colspan="3">&nbsp;</td>
+	</tr>
+	</tbody>
+	</table></div></div></aside>        </nav><!-- #site-navigation -->
+    </header><!-- #masthead -->
+
+    <div id="content" class="site-content">
+
+    <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
+
+        
+            
+<article itemscope itemtype="http://schema.org/Article" id="post-141634" class="post-141634 post type-post status-publish format-standard has-post-thumbnail hentry category-hardware category-news tag-architecture tag-computer-architecture tag-lowrisc tag-minion tag-minion-cores tag-risc tag-tagged-memory">
+    <header class="entry-header">
+        <h1 class="entry-title" itemprop="name">RISC, Tagged Memory, and Minion Cores</h1>
+        <div class="entry-meta">
+            <a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/#comments" class="comments-counts"><span class="icon-hackaday icon-hackaday-comment"></span>
+                23 Comments            </a>
+            <ul class="meta-authors">
+                <li>by:</li>
+                <a href="http://hackaday.com/author/brianbenchoff/" title="Posts by Brian Benchoff" class="author url fn" rel="author">Brian Benchoff</a>            </ul>
+        </div><!-- .entry-meta -->
+
+        <div class="entry-meta entry-meta-last">
+            <span class="entry-date" itemprop="datePublished" content="December 21, 2014"><a href="http://hackaday.com/2014/12/21/" title="December 21, 2014 - 7:00 am">December 21, 2014</a></span>
+            <ul class="share-post">
+                <li><a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fhackaday.com%2F2014%2F12%2F21%2Frisc-tagged-memory-and-minion-cores%2F" target="_blank"><span class="icon-hackaday icon-hackaday-facebook"></span></a></li>
+               <li><a href="https://twitter.com/intent/tweet?text=RISC%2C+Tagged+Memory%2C+and+Minion+Cores via @hackaday&amp;url=http%3A%2F%2Fhackaday.com%2F2014%2F12%2F21%2Frisc-tagged-memory-and-minion-cores%2F" target="_blank"><span class="icon-hackaday icon-hackaday-twitter"></span></a></li>
+                <li><a href="https://plus.google.com/share?url=http%3A%2F%2Fhackaday.com%2F2014%2F12%2F21%2Frisc-tagged-memory-and-minion-cores%2F&h1=en-US" target="_blank"><span class="icon-hackaday icon-hackaday-google"></span></a></li>
+            </ul>
+        </div><!-- .entry-meta -->
+
+        <div class="entry-featured-image"><img itemprop="image" content="https://hackadaycom.files.wordpress.com/2014/12/lowrisc.png?w=600&h=600" src="https://hackadaycom.files.wordpress.com/2014/12/systemdiagram.png?w=800" alt=""></a></div>
+    </header><!-- .entry-header -->
+
+    <div class="entry-content" itemprop="articleBody">
+        <p>Buy a computing device nowadays, and you&#8217;re probably getting something that knows x86 or an ARM. There&#8217;s more than one architecture out there for general purpose computing with dual-core MIPS boards available and some very strange silicon that&#8217;s making its way into dev boards. <a href="http://www.lowrisc.org/" target="_blank">lowRISC</a> is the latest endeavour from a few notable silicon designers, able to run Linux &#8216;well&#8217; and adding a few novel security features that haven&#8217;t yet been put together this way before.</p>
+<p>There are two interesting features that make the lowRISC notable. The first is <a href="http://en.wikipedia.org/wiki/Tagged_architecture" target="_blank">tagged memory</a>. This has been used before in older, weirder computers as a sort of metadata for memory. Basically, a few bits of each memory address tag each memory address as executable/non-executable, serve as memory watchpoints, garbage collection, and a lock on every word. New instructions are added to the ISA, allowing these tags to be manipulated, watched, and monitored to prevent the most common single security problem: buffer overflows. It&#8217;s an extremely interesting application of tagged memory, and something that isn&#8217;t really found in a modern architecture.</p>
+<p>The second neat feature of the lowRISC are the minions. These are programmable devices tied to the processor&#8217;s I/O that work a lot like a <a href="http://www.xilinx.com/products/silicon-devices/soc/zynq-7000.html" target="_blank">Zynq SOC</a> or the PRU inside the BeagleBone. Basically, they&#8217;re used for programmable I/O, implementing SPI/I2C/I2S/SDIO in software, offloading work from the main core, and devices that require very precise timing.</p>
+<p>The current goal of the lowRISC team is to develop the hardware on an FPGA, releasing some beta silicon in a year&#8217;s time. The first complete chip will be an embedded SOC, hopefully release sometime around late 2016 or early 2017. The ultimate goal is an SOC with a GPU that would be used in mobile phones, set-top boxes, and Raspi and BeagleBone-like dev boards. There are enough people on the team, including [Robert Mullins] and [Alex Bradbury] of the University of Cambridge and the Raspberry Pi, researchers at UC Berkeley, and [Bunnie Huang].</p>
+<p>It&#8217;s a project still in its infancy, but the features these people are going after are very interesting, and something that just isn&#8217;t being done with other platforms.</p>
+<p>[Alex Bardbury] gave a talk on lowRISC at <a href="http://tum-lis.github.io/orconf2014/" target="_blank">ORConf last October</a>. You can check out <a href="https://speakerdeck.com/asb/lowrisc-a-first-look" target="_blank">the presentation here</a>.</p>
+            </div><!-- .entry-content -->
+
+    <footer class="entry-footer">
+        <span class="cat-links">Posted in <a href="http://hackaday.com/category/hardware/" rel="category tag">hardware</a>, <a href="http://hackaday.com/category/news/" rel="category tag">news</a></span><span class="tags-links">Tagged <a href="http://hackaday.com/tag/architecture/" rel="tag">architecture</a>, <a href="http://hackaday.com/tag/computer-architecture/" rel="tag">computer architecture</a>, <a href="http://hackaday.com/tag/lowrisc/" rel="tag">lowRISC</a>, <a href="http://hackaday.com/tag/minion/" rel="tag">minion</a>, <a href="http://hackaday.com/tag/minion-cores/" rel="tag">minion cores</a>, <a href="http://hackaday.com/tag/risc/" rel="tag">risc</a>, <a href="http://hackaday.com/tag/tagged-memory/" rel="tag">tagged memory</a></span><meta itemprop="url" content="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/"/>    </footer><!-- .entry-footer -->
+</article><!-- #post-## -->
+
+            	<nav class="navigation post-navigation" role="navigation">
+		<h1 class="screen-reader-text">Post navigation</h1>
+		<div class="nav-links">
+			<div class="nav-previous"><a href="http://hackaday.com/2014/12/21/beating-the-skins-of-oatmeal-tins/" rel="prev"><span class="meta-nav">&larr;</span>&nbsp;Beating the Skins of Oatmeal Tins</a></div><div class="nav-next"><a href="http://hackaday.com/2014/12/21/plug-into-usb-get-a-reverse-shell/" rel="next">Plug Into USB, Get a Reverse Shell&nbsp;<span class="meta-nav">&rarr;</span></a></div>		</div><!-- .nav-links -->
+	</nav><!-- .navigation -->
+	
+            <div class="content-ads-holder">
+                <script type='text/javascript'>
+                    /* [id429] 300x250 */
+                    OA_show(429);
+                </script>
+            </div>
+
+            
+<div id="comments" class="comments-area">
+
+    
+            <h2 class="comments-title">
+            23 thoughts on &ldquo;<span>RISC, Tagged Memory, and Minion Cores</span>&rdquo;        </h2>
+
+        
+        <ol class="comment-list">
+            	<li id="comment-2272776" class="comment byuser comment-author-tekkieneet even thread-even depth-1   highlander-comment">
+		<article id="div-comment-2272776" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">tekkieneet</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2272776">
+						<time datetime="2014-12-21T07:27:34+00:00">
+							December 21, 2014 at 7:27 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>Sounds like something might be useful for IP/router type of applications too &#8211; tagged memory and Minions.<br />
+The core might be targeting beyond the $100 (or below) of FPGA eval boards.  :(</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2272776"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2272776', '3790e74e12', 'safe-comments-result-2272776');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2272776#respond' onclick='return addComment.moveForm( "div-comment-2272776", "2272776", "respond", "141634" )' aria-label='Reply to tekkieneet'>Reply</a></div>		</article><!-- .comment-body -->
+	</li><!-- #comment-## -->
+	<li id="comment-2272815" class="comment odd alt thread-odd thread-alt depth-1 parent  highlander-comment">
+		<article id="div-comment-2272815" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">F</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2272815">
+						<time datetime="2014-12-21T07:48:56+00:00">
+							December 21, 2014 at 7:48 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>yeah we remember cadrs and lispms too</p>
+<p>&#8220;something that isn’t really found in a modern architecture.&#8221;</p>
+<p>The death of the iapx432 and the rising of the x86 from its ashes is the biggest reason.</p>
+<p>We could all be using nice secure systems if Intel had not decided to cripple their systems to run MS-DOS.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2272815"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2272815', '3790e74e12', 'safe-comments-result-2272815');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2272815#respond' onclick='return addComment.moveForm( "div-comment-2272815", "2272815", "respond", "141634" )' aria-label='Reply to F'>Reply</a></div>		</article><!-- .comment-body -->
+	<ol class="children">
+	<li id="comment-2272943" class="comment even depth-2 parent  highlander-comment">
+		<article id="div-comment-2272943" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">JIm B</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2272943">
+						<time datetime="2014-12-21T09:12:37+00:00">
+							December 21, 2014 at 9:12 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>The x86 development was concurrent with the &#8216;432.  It was a 16 bit stop-gap to allow intel to maintain a growth roadmap while the &#8216;432 was still being developed.  The x86 was shipping while intel was still struggling to comlete the &#8216;432.</p>
+<p>It was just an accident of history that x86 was adopted by IBM for the PC.  Imagine how things would have been different had they gone with the 68K.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2272943"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2272943', '3790e74e12', 'safe-comments-result-2272943');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2272943#respond' onclick='return addComment.moveForm( "div-comment-2272943", "2272943", "respond", "141634" )' aria-label='Reply to JIm B'>Reply</a></div>		</article><!-- .comment-body -->
+	<ol class="children">
+	<li id="comment-2275578" class="comment odd alt depth-3 parent  highlander-comment">
+		<article id="div-comment-2275578" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">RetepV</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2275578">
+						<time datetime="2014-12-22T02:50:45+00:00">
+							December 22, 2014 at 2:50 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>But we should honestly acknowledge how far the world has been able to stretch the x86. 20 years ago, many people were thinking that the x86 architecture would die within a few years, as it was not really a &#8216;clever&#8217; architecture. I saw it as a brute force and unelegant. Well, I still see it as brute force and unelegant. But I think we have all been surprised at how far brute force can actually get you. :)</p>
+<p>It&#8217;s a pity that Motorola was not able to maintain the elegance of the 68K and couple it with brute force. But I guess that the advent of high-level programming languages simply nullified the need for elegant instructionset architectures.</p>
+<p>I feel fortunate to have worked on the Amiga and the CD-i, which used a 14MHz 68K processor. In that time, we did things with that CPU that was impossible on the x86. We needed to program certain things in assembly, to get the most out of the systems. But it was always a pleasure to do that. In contrast to having to program assembly routines on the x86&#8230; Argh, the horror of trying to create smooth animations with data that was larger than the segment size. :x</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2275578"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2275578', '3790e74e12', 'safe-comments-result-2275578');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2275578#respond' onclick='return addComment.moveForm( "div-comment-2275578", "2275578", "respond", "141634" )' aria-label='Reply to RetepV'>Reply</a></div>		</article><!-- .comment-body -->
+	<ol class="children">
+	<li id="comment-2275643" class="comment even depth-4   highlander-comment">
+		<article id="div-comment-2275643" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn"><a href='https://sites.google.com/site/libby8dev/fignition' rel='external nofollow' class='url'>Julian Skidmore</a></b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2275643">
+						<time datetime="2014-12-22T03:19:49+00:00">
+							December 22, 2014 at 3:19 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>&#8220;But I guess that the advent of high-level programming languages simply nullified the need for elegant instructionset architectures.&#8221;</p>
+<p>Surely, it&#8217;s the opposite. The sheer amount of x86 assembler code; partly due to the lack of decent 1980s compilers; largely due to the high-level inadequacies of the 8086 architecture pushed it to a 95% level market domination.</p>
+<p>The x86 was built on binary/assembler level compatibility: 8-bit 8080 assembler code could be easily converted to 8086 object code; the original 8088-based IBM PC was too slow to support compiled languages well and the 8086 was a poor target for high-level languages, at least compared with the 68000. All of this contrived to put the 8086 into a dominant position, it was too much of a hurdle for people to shift applications to other architectures.</p>
+<p>Consequently, the investment available for brute-force performance improvements on the x86 was available, but with only 5% of the market, this wasn&#8217;t possible for Motorola with the 68K.</p>
+<p>High-level languages in themselves are designed to level the architectural playing field; the whole point is that you can retarget the code at different processors, because binary compatibility no longer matters. In addition, the whole point of elegant RISC architectures is that they&#8217;re *more* suited to high-level languages, because it takes less effort to write a compiler when you don&#8217;t have to deal with all the idiosyncrasies. This is why ARM, the world&#8217;s most popular RISC, can make major inroads into a number of different markets.</p>
+<p>To sum up: The x86&#8217;s awful 16-bit design: terrible for high-level languages; terrible for accessing large amounts of data needed by businesses should have meant meant it didn&#8217;t stand a chance. But it won because of the pre-existing application investment in its 8-bit predecessor the 8080 and because in 1981, no one ever got fired for buying IBM.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2275643"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2275643', '3790e74e12', 'safe-comments-result-2275643');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2275643#respond' onclick='return addComment.moveForm( "div-comment-2275643", "2275643", "respond", "141634" )' aria-label='Reply to Julian Skidmore'>Reply</a></div>		</article><!-- .comment-body -->
+	</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+	<li id="comment-2272834" class="comment byuser comment-author-whitequark odd alt thread-even depth-1   highlander-comment">
+		<article id="div-comment-2272834" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">whitequark</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2272834">
+						<time datetime="2014-12-21T08:00:30+00:00">
+							December 21, 2014 at 8:00 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>As a side note, AArch64 also supports tagged memory, although I don&#8217;t think it has hardware-assisted bounds checking.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2272834"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2272834', '3790e74e12', 'safe-comments-result-2272834');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2272834#respond' onclick='return addComment.moveForm( "div-comment-2272834", "2272834", "respond", "141634" )' aria-label='Reply to whitequark'>Reply</a></div>		</article><!-- .comment-body -->
+	</li><!-- #comment-## -->
+	<li id="comment-2272845" class="comment even thread-odd thread-alt depth-1 parent  highlander-comment">
+		<article id="div-comment-2272845" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">Marcus</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2272845">
+						<time datetime="2014-12-21T08:11:17+00:00">
+							December 21, 2014 at 8:11 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>Hi, </p>
+<p>ok, to demystify a bit: Things being around in x86 for quite some time:</p>
+<p>&#8220;Basically, a few bits of each memory address tag each memory address as executable/non-executable,&#8221;</p>
+<p><a href="http://en.wikipedia.org/wiki/NX_bit" rel="nofollow" target="_blank">http://en.wikipedia.org/wiki/NX_bit</a></p>
+<p>&#8221; serve as memory watchpoints&#8221;</p>
+<p><a href="http://en.wikipedia.org/wiki/X86_debug_register" rel="nofollow" target="_blank">http://en.wikipedia.org/wiki/X86_debug_register</a></p>
+<p>Ok, given, these are x86 architectural features rather than memory address tags, but considering that any OS first of all enables paging on x86, the difference between tagging a page and a memory address is not very meaningful.</p>
+<p>&#8220;It’s an extremely interesting application of tagged memory, and something that isn’t really found in a modern architecture.&#8221;</p>
+<p>Well, unless you call virtual memory something modern. Then, a significant part of a memory address encodes things like access rights, and is checked by the CPU/OS on access.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2272845"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2272845', '3790e74e12', 'safe-comments-result-2272845');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2272845#respond' onclick='return addComment.moveForm( "div-comment-2272845", "2272845", "respond", "141634" )' aria-label='Reply to Marcus'>Reply</a></div>		</article><!-- .comment-body -->
+	<ol class="children">
+	<li id="comment-2272990" class="comment odd alt depth-2 parent  highlander-comment">
+		<article id="div-comment-2272990" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">baobrien</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2272990">
+						<time datetime="2014-12-21T09:41:51+00:00">
+							December 21, 2014 at 9:41 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>The NX bit on x86 is not quite the same as memory tagging on the lowRISC. On x86, the NX bit and r/w bits apply to the whole page, while on lowRISC, tag bits can be used for every address.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2272990"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2272990', '3790e74e12', 'safe-comments-result-2272990');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2272990#respond' onclick='return addComment.moveForm( "div-comment-2272990", "2272990", "respond", "141634" )' aria-label='Reply to baobrien'>Reply</a></div>		</article><!-- .comment-body -->
+	<ol class="children">
+	<li id="comment-2273198" class="comment byuser comment-author-officialmarcusmueller even depth-3   highlander-comment">
+		<article id="div-comment-2273198" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">officialmarcusmueller</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2273198">
+						<time datetime="2014-12-21T11:37:23+00:00">
+							December 21, 2014 at 11:37 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>I actually do agree; however, I really don&#8217;t see how that is functionally relevant on a modern system without significant changes in how OSes work; to illustrate: When asking for memory, your kernel gives you a 4KB page, and hands it over with a virtual address attached. You then use this address as base for your own processes&#8217; operation. Tagging each address is not really helping much if the granularity of memory you can request is actually a page. I&#8217;m not absolutely sure, but I must assume that some aspects of the virtualization-oriented instructions on modern x86 kind of do that, allowing the supervisor to interfere whenever a guest requests a specific address, at least on a nested page translation level. If someone with a compiler and virtualization background would comment on this, it would be greatly helpful.</p>
+<p>In fact, <a href="https://speakerdeck.com/asb/lowrisc-a-first-look" rel="nofollow" target="_blank">https://speakerdeck.com/asb/lowrisc-a-first-look</a> even addresses the insufficiencies of the NX bit &#8212; but basically doesn&#8217;t explain why going from page to address (aka Byte) granularity actually solves this problem.</p>
+<p>I see a lot of problems arise from this fine granularity; think of SIMD loading instructions, tag updates always thrashing the pipeline, SMP concurrency etc. However, if they can come up with a solution that is performant enough if working in a classical way, and allows for this high level of precision, that would be awesome. So far, this is highly developed vaporware, so I&#8217;m really looking forward to them releasing crucial parts of the</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2273198"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2273198', '3790e74e12', 'safe-comments-result-2273198');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2273198#respond' onclick='return addComment.moveForm( "div-comment-2273198", "2273198", "respond", "141634" )' aria-label='Reply to officialmarcusmueller'>Reply</a></div>		</article><!-- .comment-body -->
+	</li><!-- #comment-## -->
+	<li id="comment-2273237" class="comment odd alt depth-3 parent  highlander-comment">
+		<article id="div-comment-2273237" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">Glisse</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2273237">
+						<time datetime="2014-12-21T11:55:39+00:00">
+							December 21, 2014 at 11:55 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>The idea of the tags is that before you call a function the calling function tag the returning address on stack to protect it from being overwritten which in turns make sure that no function being call can hijack the original program by overwriting return address. The NX bit only protect against a sub-class of this kind of attack.</p>
+<p>The NX bit apply to page and is only meant to block attack which try to jump to code into data which content is under attacker control. This block a whole set of attack but not all of them. For instance attacker can still for return address to some know libc function with attacker crafted arguments. Which the tag per word can forbid.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2273237"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2273237', '3790e74e12', 'safe-comments-result-2273237');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2273237#respond' onclick='return addComment.moveForm( "div-comment-2273237", "2273237", "respond", "141634" )' aria-label='Reply to Glisse'>Reply</a></div>		</article><!-- .comment-body -->
+	<ol class="children">
+	<li id="comment-2276023" class="comment even depth-4   highlander-comment">
+		<article id="div-comment-2276023" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn"><a href='http://twitter.com/asbradbury' rel='external nofollow' class='url'>Alex Bradbury (@asbradbury)</a></b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2276023">
+						<time datetime="2014-12-22T05:58:57+00:00">
+							December 22, 2014 at 5:58 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>That&#8217;s exactly it, thanks for clarifying.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2276023"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2276023', '3790e74e12', 'safe-comments-result-2276023');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2276023#respond' onclick='return addComment.moveForm( "div-comment-2276023", "2276023", "respond", "141634" )' aria-label='Reply to Alex Bradbury (@asbradbury)'>Reply</a></div>		</article><!-- .comment-body -->
+	</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+	<li id="comment-2272922" class="comment byuser comment-author-geremycondra odd alt thread-even depth-1   highlander-comment">
+		<article id="div-comment-2272922" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn"><a href='http://geremycondra.net' rel='external nofollow' class='url'>geremycondra</a></b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2272922">
+						<time datetime="2014-12-21T09:00:06+00:00">
+							December 21, 2014 at 9:00 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>Good and long awaited for MIPS, but the features enabled by memory tagging already exist in both x86 and ARM worlds. Buffer overflows still exist there; I suspect the same will be true on this.</p>
+<p>Minions seem interesting. I&#8217;ve wanted Intel CPUs with such a thing for a while, but I wonder what the power/performance curve will look like on these.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2272922"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2272922', '3790e74e12', 'safe-comments-result-2272922');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2272922#respond' onclick='return addComment.moveForm( "div-comment-2272922", "2272922", "respond", "141634" )' aria-label='Reply to geremycondra'>Reply</a></div>		</article><!-- .comment-body -->
+	</li><!-- #comment-## -->
+	<li id="comment-2272949" class="comment byuser comment-author-geremycondra even thread-odd thread-alt depth-1   highlander-comment">
+		<article id="div-comment-2272949" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn"><a href='http://geremycondra.net' rel='external nofollow' class='url'>geremycondra</a></b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2272949">
+						<time datetime="2014-12-21T09:17:16+00:00">
+							December 21, 2014 at 9:17 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>Actually, the summary is a bit misleading. They don&#8217;t plan to use tagged memory to implement just NX, they want to use it to make efficient CFI implementations possible. That&#8217;s more interesting.</p>
+<p>CFI (control flow integrity) basically means that arbitrary attacks which corrupt the expected call graph are detected at runtime, typically causing the program to abort. Those attacks could be buffer overflows, but they could also be ROP or integer overflows or what-have-you. The technique is interesting for just this reason: you don&#8217;t have to anticipate what your attacker will do, only know what they&#8217;re trying to accomplish. That&#8217;s a big potential win.</p>
+<p>The lowRISC paper points out that this will involve compiler work, which is an understatement; essentially all CFI work today focuses on the compiler, and it&#8217;s an active area of research. Whether it will remain one when this ships is a larger question, as CFI implementations like those currently checked into LLVM have recently become quite performant. The overhead predicted by the lowRISC group anyways is in the same neighborhood as compiler-only work done recently by teams of researchers operating independently at Google and FireEye/Mandiant. Could this yield a performance edge? Maybe, but probably not enough to overcome Intel&#8217;s current performance advantage. Maybe power/ or price/performance will be better.</p>
+<p>Good stuff.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2272949"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2272949', '3790e74e12', 'safe-comments-result-2272949');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2272949#respond' onclick='return addComment.moveForm( "div-comment-2272949", "2272949", "respond", "141634" )' aria-label='Reply to geremycondra'>Reply</a></div>		</article><!-- .comment-body -->
+	</li><!-- #comment-## -->
+	<li id="comment-2273499" class="comment byuser comment-author-neon22 odd alt thread-even depth-1   highlander-comment">
+		<article id="div-comment-2273499" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn"><a href='http://neon22.wordpress.com' rel='external nofollow' class='url'>neon22</a></b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2273499">
+						<time datetime="2014-12-21T14:18:49+00:00">
+							December 21, 2014 at 2:18 pm						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>wow &#8211; I missed this news. It would be great to get tagged memory back. It was super useful on the lisp machines and allowed FPU ops to be typed automatically so floats went through a diff process than ints when adding and casts were automatic. Goodbye to overlfow attacks as a side effect.</p>
+<p>The extra tricks you can pull with garbage collection were great too. Many users machines were never rebooted and had very long uptimes due to the ephemeral and dynamic garbage collection system.<br />
+The Symbolics lisp machine had a 40 bit word of which 8 was tags.</p>
+<p>I&#8217;ve been waiting for years for someone to implement this.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2273499"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2273499', '3790e74e12', 'safe-comments-result-2273499');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2273499#respond' onclick='return addComment.moveForm( "div-comment-2273499", "2273499", "respond", "141634" )' aria-label='Reply to neon22'>Reply</a></div>		</article><!-- .comment-body -->
+	</li><!-- #comment-## -->
+	<li id="comment-2275923" class="comment even thread-odd thread-alt depth-1   highlander-comment">
+		<article id="div-comment-2275923" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">shp</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2275923">
+						<time datetime="2014-12-22T05:11:14+00:00">
+							December 22, 2014 at 5:11 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>There is another RISC-V (or Cortex M3) based project, where a smart multicore solution enables virtual peripherals. Check this out:</p>
+<p><a href="https://www.indiegogo.com/projects/arduissimo-reloaded-multicore-cortex-m3-arduino" rel="nofollow" target="_blank">https://www.indiegogo.com/projects/arduissimo-reloaded-multicore-cortex-m3-arduino</a></p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2275923"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2275923', '3790e74e12', 'safe-comments-result-2275923');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2275923#respond' onclick='return addComment.moveForm( "div-comment-2275923", "2275923", "respond", "141634" )' aria-label='Reply to shp'>Reply</a></div>		</article><!-- .comment-body -->
+	</li><!-- #comment-## -->
+	<li id="comment-2276039" class="comment odd alt thread-even depth-1   highlander-comment">
+		<article id="div-comment-2276039" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn"><a href='http://twitter.com/asbradbury' rel='external nofollow' class='url'>Alex Bradbury (@asbradbury)</a></b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2276039">
+						<time datetime="2014-12-22T06:04:36+00:00">
+							December 22, 2014 at 6:04 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>Just to clarify the concept of tagged memory: the memory address is used to look up both data, and this extra metadata (the tag). Reading a 64-bit word would actually result in 66 bits (a 64-bit data word and 2-bit tag). The tag cache logically extends the word width from memory to 66-bits to accommodate this.</p>
+<p>This is a different idea to using some bits of a memory address to encode information about the value being pointed to. Commonly, some of the least significant bits are used for this. As whitequark mentioned, AArch64 specifically allows the most significant 8-bits to be ignored in address translation so they can be used arbitrarily for user code.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2276039"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2276039', '3790e74e12', 'safe-comments-result-2276039');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2276039#respond' onclick='return addComment.moveForm( "div-comment-2276039", "2276039", "respond", "141634" )' aria-label='Reply to Alex Bradbury (@asbradbury)'>Reply</a></div>		</article><!-- .comment-body -->
+	</li><!-- #comment-## -->
+	<li id="comment-2276482" class="comment even thread-odd thread-alt depth-1   highlander-comment">
+		<article id="div-comment-2276482" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">TLP</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2276482">
+						<time datetime="2014-12-22T09:18:49+00:00">
+							December 22, 2014 at 9:18 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>Those &#8220;minions&#8221; remind me of the peripheral processors on old CDC mainframes.</p>
+<p>Come to think of it, this system will probably have about the same level of raw processing power, if it gets into silicon.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2276482"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2276482', '3790e74e12', 'safe-comments-result-2276482');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2276482#respond' onclick='return addComment.moveForm( "div-comment-2276482", "2276482", "respond", "141634" )' aria-label='Reply to TLP'>Reply</a></div>		</article><!-- .comment-body -->
+	</li><!-- #comment-## -->
+	<li id="comment-2276891" class="comment odd alt thread-even depth-1 parent  highlander-comment">
+		<article id="div-comment-2276891" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">Marvin</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2276891">
+						<time datetime="2014-12-22T12:24:34+00:00">
+							December 22, 2014 at 12:24 pm						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>Or we could stop putting data on the stack.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2276891"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2276891', '3790e74e12', 'safe-comments-result-2276891');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2276891#respond' onclick='return addComment.moveForm( "div-comment-2276891", "2276891", "respond", "141634" )' aria-label='Reply to Marvin'>Reply</a></div>		</article><!-- .comment-body -->
+	<ol class="children">
+	<li id="comment-2276896" class="comment byuser comment-author-whitequark even depth-2 parent  highlander-comment">
+		<article id="div-comment-2276896" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">whitequark</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2276896">
+						<time datetime="2014-12-22T12:25:40+00:00">
+							December 22, 2014 at 12:25 pm						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>Or we could stop using memory-unsafe languages.</p>
+<p>Why the fuck anyone considers continued use of C acceptable is beyond me.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2276896"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2276896', '3790e74e12', 'safe-comments-result-2276896');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2276896#respond' onclick='return addComment.moveForm( "div-comment-2276896", "2276896", "respond", "141634" )' aria-label='Reply to whitequark'>Reply</a></div>		</article><!-- .comment-body -->
+	<ol class="children">
+	<li id="comment-2279988" class="comment odd alt depth-3 parent  highlander-comment">
+		<article id="div-comment-2279988" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn"><a href='http://raszpl.blogspot.com/' rel='external nofollow' class='url'>rasz_pl</a></b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2279988">
+						<time datetime="2014-12-23T06:28:03+00:00">
+							December 23, 2014 at 6:28 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>because this is embedded, and OOO/functional programming is too abstract for low level stuff. In C you  look at the source and you know how the machine code will look like.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2279988"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2279988', '3790e74e12', 'safe-comments-result-2279988');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2279988#respond' onclick='return addComment.moveForm( "div-comment-2279988", "2279988", "respond", "141634" )' aria-label='Reply to rasz_pl'>Reply</a></div>		</article><!-- .comment-body -->
+	<ol class="children">
+	<li id="comment-2280020" class="comment byuser comment-author-whitequark even depth-4 parent  highlander-comment">
+		<article id="div-comment-2280020" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">whitequark</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2280020">
+						<time datetime="2014-12-23T06:37:03+00:00">
+							December 23, 2014 at 6:37 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>Hahahahahaha.</p>
+<p>Let&#8217;s try it with some very simple code. For example:</p>
+<p>void x(char *restrict a, char *restrict b, size_t c) { for(int i = 0; i &lt; c; i++) a[i]=b[i]; }</p>
+<p>So how will the machine code look like? Describe all possible results in rough detail.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2280020"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2280020', '3790e74e12', 'safe-comments-result-2280020');">Report comment</a></span>            </div>
+			<div class="reply"><a class='comment-reply-link' href='/2014/12/21/risc-tagged-memory-and-minion-cores/?replytocom=2280020#respond' onclick='return addComment.moveForm( "div-comment-2280020", "2280020", "respond", "141634" )' aria-label='Reply to whitequark'>Reply</a></div>		</article><!-- .comment-body -->
+	<ol class="children">
+	<li id="comment-2283929" class="comment odd alt depth-5  max-depth highlander-comment">
+		<article id="div-comment-2283929" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn"><a href='http://raszpl.blogspot.com/' rel='external nofollow' class='url'>rasz_pl</a></b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2283929">
+						<time datetime="2014-12-24T08:25:36+00:00">
+							December 24, 2014 at 8:25 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>memcpy?</p>
+<p>mov     al,byte ptr [esi]<br />
+add     esi,1<br />
+mov     [edi],al<br />
+add     edi,1<br />
+sub     ebx,1<br />
+jnz      loop</p>
+<p>I dont see the point of even writing that :/ You dont need all possible machine code variations, you need exactly one that you can be sure of when debugging.<br />
+Whats so funny? that you are unable to account for compiler optimizations in your head? Discount optimizations and think lower level.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2283929"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2283929', '3790e74e12', 'safe-comments-result-2283929');">Report comment</a></span>            </div>
+					</article><!-- .comment-body -->
+	</li><!-- #comment-## -->
+	<li id="comment-2283954" class="comment byuser comment-author-whitequark even depth-5  max-depth highlander-comment">
+		<article id="div-comment-2283954" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+										<b class="fn">whitequark</b> <span class="says">says:</span>				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="http://hackaday.com/2014/12/21/risc-tagged-memory-and-minion-cores/comment-page-1/#comment-2283954">
+						<time datetime="2014-12-24T08:39:33+00:00">
+							December 24, 2014 at 8:39 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<p>Well, there are at least eight realistic variants that could be translated, not counting the various decisions the code generator may take when vectorizing the loop. (jump/call to memcpy, loop by byte, word, loop with SIMD, last three backwards) All of them have different, sometimes wildly, behavior with regards to performance and side effects.</p>
+<p>My point is that the C spec, which the compiler follows, has practically nothing in common with practical architectures. It specifies behavior of a C abstract machine, which doesn&#8217;t even have *stack*. As long as the behavior is identical modulo the C a.m., the compiler is allowed to perform any transformation it desires. You cannot possibly predict what the machine code will look like. Arguably, C is one of the most abstract languages when it comes to code generation.</p>
+<p>In contrast, say, ocamlopt&#8217;s code generator (of a functional language!) is simple and predictable. The worst thing it could do is inline a function.</p>
+<p>Anyway, the claim that OO/FP is somehow too abstract for embedded development is absurd. C++ and Rust are well suited for embedded, if they have other issues.</p>
+			</div><!-- .comment-content -->
+			<div class="report-abuse">
+                
+			<span id="safe-comments-result-2283954"><a class="hide-if-no-js" href="javascript:void(0);" onclick="safe_report_comments_flag_comment( '2283954', '3790e74e12', 'safe-comments-result-2283954');">Report comment</a></span>            </div>
+					</article><!-- .comment-body -->
+	</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+        
+    
+    
+    								<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2014/12/21/risc-tagged-memory-and-minion-cores/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://hackaday.com/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+																										
+
+
+												<input type="hidden" id="highlander_comment_nonce" name="highlander_comment_nonce" value="0480c2bb34" /><input type="hidden" name="_wp_http_referer" value="/2014/12/21/risc-tagged-memory-and-minion-cores/" />
+<input type="hidden" name="hc_post_as" id="hc_post_as" value="guest" />
+
+<div class="comment-form-field comment-textarea">
+	<label for="comment">Enter your comment here...</label>
+	<div id="comment-form-comment"><textarea id="comment" name="comment" title="Enter your comment here..."></textarea></div>
+</div>
+
+<div id="comment-form-identity">
+
+	<div id="comment-form-nascar">
+		<p>Fill in your details below or click an icon to log in:</p>
+		<ul>
+			<li class="selected" style="display:none;">
+				<a href="#comment-form-guest" id="postas-guest" title="Guest">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:WordPress.com" id="postas-wordpress" title="WordPress.com">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Twitter" id="postas-twitter" title="Twitter">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Facebook" id="postas-facebook" title="Facebook">
+					<span></span>
+				</a>
+			</li>
+			<li>
+		</ul>
+	</div>
+
+	<div id="comment-form-guest" class="comment-form-service selected">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="" alt="Gravatar" width="25" class="no-grav" />
+</a>			</div>
+
+				<div class="comment-form-fields">
+				<div class="comment-form-field comment-form-email">
+					<label for="email">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
+					<div class="comment-form-input"><input id="email" name="email" type="email" value="" /></div>
+				</div>
+				<div class="comment-form-field comment-form-author">
+					<label for="author">Name <span class="required">(required)</span></label>
+					<div class="comment-form-input"><input id="author" name="author" type="text" value="" /></div>
+				</div>
+				<div class="comment-form-field comment-form-url">
+					<label for="url">Website</label>
+					<div class="comment-form-input"><input id="url" name="url" type="text" value="" /></div>
+				</div>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-wordpress" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="https://s2.wp.com/wp-content/mu-plugins/highlander-comments/images/wplogo.png" alt="WordPress.com Logo" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="" />
+				<input type="hidden" name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="" />
+				<input type="hidden" name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="" />
+				<p class="comment-form-posting-as pa-wordpress"><strong></strong> You are commenting using your WordPress.com account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'wordpress' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-twitter" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="" alt="Twitter picture" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="" />
+				<input type="hidden" name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="" />
+				<input type="hidden" name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="" />
+				<p class="comment-form-posting-as pa-twitter"><strong></strong> You are commenting using your Twitter account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'twitter' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-facebook" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="" alt="Facebook photo" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="" />
+				<input type="hidden" name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="" />
+				<input type="hidden" name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="" />
+				<p class="comment-form-posting-as pa-facebook"><strong></strong> You are commenting using your Facebook account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'facebook' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-googleplus" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="" alt="Google+ photo" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="googleplus_avatar" id="googleplus-avatar" class="comment-meta-googleplus" value="" />
+				<input type="hidden" name="googleplus_user_id" id="googleplus-user_id" class="comment-meta-googleplus" value="" />
+				<input type="hidden" name="googleplus_access_token" id="googleplus-access_token" class="comment-meta-googleplus" value="" />
+				<p class="comment-form-posting-as pa-googleplus"><strong></strong> You are commenting using your Google+ account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'googleplus' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+
+	<div id="comment-form-load-service" class="comment-form-service">
+		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancel</a></div>
+		<p>Connecting to %s</p>
+	</div>
+
+	
+</div>
+
+<script type="text/javascript">
+var highlander_expando_javascript = function(){
+	var input = document.createElement( 'input' ),
+	    comment = jQuery( '#comment' );
+
+	if ( 'placeholder' in input ) {
+		comment.attr( 'placeholder', jQuery( '.comment-textarea label' ).remove().text() );
+	}
+
+	// Expando Mode: start small, then auto-resize on first click + text length
+	jQuery( '#comment-form-identity' ).hide();
+	jQuery( '#comment-form-subscribe' ).hide();
+	jQuery( '#commentform .form-submit' ).hide();
+
+	comment.css( { 'height':'10px' } ).one( 'focus', function() {
+		var timer = setInterval( HighlanderComments.resizeCallback, 10 )
+		jQuery( this ).animate( { 'height': HighlanderComments.initialHeight } ).delay( 100 ).queue( function(n) { clearInterval( timer ); HighlanderComments.resizeCallback(); n(); } );
+		jQuery( '#comment-form-identity' ).slideDown();
+		jQuery( '#comment-form-subscribe' ).slideDown();
+		jQuery( '#commentform .form-submit' ).slideDown();
+	});
+}
+jQuery(document).ready( highlander_expando_javascript );
+</script>
+
+<div id="comment-form-subscribe">
+	<p class="comment-subscription-form"><input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;" tabindex="6"/> <label class="subscribe-label" id="subscribe-label" for="subscribe" style="display: inline;">Notify me of new comments via email.</label></p><p class="post-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto;" tabindex="7"/> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog"  style="display: inline;">Notify me of new posts via email.</label></p></div>
+
+												<p class="form-submit">
+							<input name="submit" type="submit" id="comment-submit" class="submit" value="Post Comment" />
+							<input type='hidden' name='comment_post_ID' value='141634' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="d554163a9d" /></p>
+<input type="hidden" name="genseq" value="1423874900" />
+<p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="244"/></p>					</form>
+							</div><!-- #respond -->
+			<div style="clear: both"></div>
+</div><!-- #comments -->
+
+        
+        </main><!-- #main -->
+    </div><!-- #primary -->
+
+
+<div id="secondary" class="widget-area" role="complementary">
+
+    <div class="sidebar-ads-holder">
+        <script type='text/javascript'>
+            /* [id428] 300x250 */
+            OA_show(428);
+        </script>
+    </div>
+
+    <aside id="text-6" class="widget widget_text">			<div class="textwidget"><a href="http://store.hackaday.com/products/hackaday-omnibus-2014?utm_source=hackaday-sidebar&amp;utm_medium=omnibus"><img width="296" src="https://hackadaycom.files.wordpress.com/2015/02/had-omnibus-03-1.jpg?w=296" /></a></div>
+		</aside><aside id="search-2" class="widget widget_search"><h1 class="widget-title">Search</h1><form role="search" method="get" class="search-form" action="http://hackaday.com/">
+				<label>
+					<span class="screen-reader-text">Search for:</span>
+					<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" title="Search for:" />
+				</label>
+				<input type="submit" class="search-submit" value="Search" />
+			</form></aside><aside id="hackadayfollowus-2" class="widget widget-follow-us"><h1 class="widget-title">Never miss a hack</h1>
+			<a href="https://www.facebook.com/pages/Hack-a-Day/136115233068429" target="_blank" class="icon-social icon-facebook">Follow on facebook</a>
+			<a href="https://plus.google.com/+hackaday/posts" target="_blank" class="icon-social icon-plusone">Follow on google+</a>
+			<a href="https://twitter.com/hackaday" target="_blank" class="icon-social icon-twitter">Follow on twitter</a>
+			<a href="https://www.youtube.com/user/hackaday" target="_blank" class="icon-social icon-youtube">Follow on youtube</a>
+			<a href="http://hackaday.com/blog/feed/" target="_blank" class="icon-social icon-rss">Follow on rss</a>
+			<a href="mailto:tips@hackaday.com" class="icon-social icon-contact">Contact us</a>
+		</aside><aside id="hackadayrecentposts-2" class="widget widget-recent-posts"><h1 class="widget-title">If you missed it</h1>
+	<ul>
+			<li>
+			<a href="http://hackaday.com/2015/02/12/why-you-should-care-about-software-defined-radio/" class="recent-image">
+						<img src="https://hackadaycom.files.wordpress.com/2015/02/realtek_rtl2838_dvb-t_usb_stick-thumb.jpg?w=300&#038;h=300" alt="">
+			</a>
+			<div class="entry-intro">
+				<h2>
+					<a href="http://hackaday.com/2015/02/12/why-you-should-care-about-software-defined-radio/">Why You Should Care About Software Defined Radio</a>
+				</h2>
+				<a href="http://hackaday.com/2015/02/12/why-you-should-care-about-software-defined-radio//#comments" class="comment-link">
+					<span class="icon-hackaday icon-hackaday-comment"></span> 88 Comments				</a>
+			</div>
+		</li>
+			<li>
+			<a href="http://hackaday.com/2015/02/11/omnibus-seen-in-the-wild/" class="recent-image">
+						<img src="https://hackadaycom.files.wordpress.com/2015/02/hackaday-omnibus-in-the-wild-thumb.png?w=300&#038;h=300" alt="">
+			</a>
+			<div class="entry-intro">
+				<h2>
+					<a href="http://hackaday.com/2015/02/11/omnibus-seen-in-the-wild/">Omnibus Seen in the Wild</a>
+				</h2>
+				<a href="http://hackaday.com/2015/02/11/omnibus-seen-in-the-wild//#comments" class="comment-link">
+					<span class="icon-hackaday icon-hackaday-comment"></span> 9 Comments				</a>
+			</div>
+		</li>
+			<li>
+			<a href="http://hackaday.com/2015/02/11/caption-cern-contest-week-1-results/" class="recent-image">
+						<img src="https://hackadaycom.files.wordpress.com/2015/02/cern-thumb.png?w=300&#038;h=300" alt="">
+			</a>
+			<div class="entry-intro">
+				<h2>
+					<a href="http://hackaday.com/2015/02/11/caption-cern-contest-week-1-results/">Caption CERN Contest Turns out Big Brains and Comic Brilliance</a>
+				</h2>
+				<a href="http://hackaday.com/2015/02/11/caption-cern-contest-week-1-results//#comments" class="comment-link">
+					<span class="icon-hackaday icon-hackaday-comment"></span> 7 Comments				</a>
+			</div>
+		</li>
+			<li>
+			<a href="http://hackaday.com/2015/02/09/hackaday-io-reaches-50000-users/" class="recent-image">
+						<img src="https://hackadaycom.files.wordpress.com/2015/02/iothumb.jpg?w=300&#038;h=300" alt="">
+			</a>
+			<div class="entry-intro">
+				<h2>
+					<a href="http://hackaday.com/2015/02/09/hackaday-io-reaches-50000-users/">Hackaday.io Reaches 50,000 Registered Users</a>
+				</h2>
+				<a href="http://hackaday.com/2015/02/09/hackaday-io-reaches-50000-users//#comments" class="comment-link">
+					<span class="icon-hackaday icon-hackaday-comment"></span> 18 Comments				</a>
+			</div>
+		</li>
+			<li>
+			<a href="http://hackaday.com/2015/02/05/ive-come-here-to-bury-radio-shack-not-praise-it/" class="recent-image">
+						<img src="https://hackadaycom.files.wordpress.com/2015/01/radioshack.jpg?w=300&#038;h=300" alt="">
+			</a>
+			<div class="entry-intro">
+				<h2>
+					<a href="http://hackaday.com/2015/02/05/ive-come-here-to-bury-radio-shack-not-praise-it/">I&#8217;ve come to bury Radio Shack, Not praise it.</a>
+				</h2>
+				<a href="http://hackaday.com/2015/02/05/ive-come-here-to-bury-radio-shack-not-praise-it//#comments" class="comment-link">
+					<span class="icon-hackaday icon-hackaday-comment"></span> 210 Comments				</a>
+			</div>
+		</li>
+		</ul>
+	<a href="http://hackaday.com/category/featured/">More from this category</a>
+	</aside><aside id="categories-2" class="widget widget_categories"><h1 class="widget-title">Categories</h1><select name='cat' id='cat' class='postform' >
+	<option value='-1'>Select Category</option>
+	<option class="level-0" value="114554125">3d Printer hacks</option>
+	<option class="level-0" value="18020710">Android Hacks</option>
+	<option class="level-0" value="18020705">Arduino Hacks</option>
+	<option class="level-0" value="27981650">ARM</option>
+	<option class="level-0" value="33199679">Ask Hackaday</option>
+	<option class="level-0" value="64298109">ATtiny Hacks</option>
+	<option class="level-0" value="25122024">Beer Hacks</option>
+	<option class="level-0" value="12115263">blackberry hacks</option>
+	<option class="level-0" value="23971598">car hacks</option>
+	<option class="level-0" value="11894719">Cellphone Hacks</option>
+	<option class="level-0" value="35745764">chemistry hacks</option>
+	<option class="level-0" value="24483654">classic hacks</option>
+	<option class="level-0" value="31677810">clock hacks</option>
+	<option class="level-0" value="18755632">cnc hacks</option>
+	<option class="level-0" value="568165">computer hacks</option>
+	<option class="level-0" value="78428">cons</option>
+	<option class="level-0" value="5738">contests</option>
+	<option class="level-0" value="3923181">cooking hacks</option>
+	<option class="level-0" value="2588813">Crowd Funding</option>
+	<option class="level-0" value="10969032">digital audio hacks</option>
+	<option class="level-0" value="10969033">digital cameras hacks</option>
+	<option class="level-0" value="10969034">downloads hacks</option>
+	<option class="level-0" value="107827385">drone hacks</option>
+	<option class="level-0" value="63176382">Engine Hacks</option>
+	<option class="level-0" value="212825112">Fail of the Week</option>
+	<option class="level-0" value="35890">Featured</option>
+	<option class="level-0" value="551890">firefox hacks</option>
+	<option class="level-0" value="53446541">FPGA</option>
+	<option class="level-0" value="18020562">g1 hacks</option>
+	<option class="level-0" value="320557">google hacks</option>
+	<option class="level-0" value="10969036">gps hacks</option>
+	<option class="level-0" value="24535490">green hacks</option>
+	<option class="level-0" value="190105353">Hackaday Columns</option>
+	<option class="level-0" value="27311668">Hackaday links</option>
+	<option class="level-0" value="289711781">Hackaday Store</option>
+	<option class="level-0" value="21755374">Hackerspaces</option>
+	<option class="level-0" value="6310599">HackIt</option>
+	<option class="level-0" value="10969037">handhelds hacks</option>
+	<option class="level-0" value="79">hardware</option>
+	<option class="level-0" value="66307084">Holiday Hacks</option>
+	<option class="level-0" value="10969038">home entertainment hacks</option>
+	<option class="level-0" value="5660882">home hacks</option>
+	<option class="level-0" value="2708">how-to</option>
+	<option class="level-0" value="908478">internet hacks</option>
+	<option class="level-0" value="831">Interviews</option>
+	<option class="level-0" value="1416772">iphone hacks</option>
+	<option class="level-0" value="1275163">ipod hacks</option>
+	<option class="level-0" value="4157506">Kindle hacks</option>
+	<option class="level-0" value="46717088">Kinect hacks</option>
+	<option class="level-0" value="10969048">laptops hacks</option>
+	<option class="level-0" value="10969055">laser hacks</option>
+	<option class="level-0" value="18020716">led hacks</option>
+	<option class="level-0" value="10626">lifehacks</option>
+	<option class="level-0" value="729674">linux hacks</option>
+	<option class="level-0" value="20732807">lockpicking hacks</option>
+	<option class="level-0" value="10969060">macs hacks</option>
+	<option class="level-0" value="2377605">major tom</option>
+	<option class="level-0" value="11284667">Medical hacks</option>
+	<option class="level-0" value="139916">Microcontrollers</option>
+	<option class="level-0" value="5611793">misc hacks</option>
+	<option class="level-0" value="18020730">multitouch hacks</option>
+	<option class="level-0" value="22652725">musical hacks</option>
+	<option class="level-0" value="18020722">netbook hacks</option>
+	<option class="level-0" value="6166512">Network Hacks</option>
+	<option class="level-0" value="103">news</option>
+	<option class="level-0" value="1861880">nintendo ds hacks</option>
+	<option class="level-0" value="114555425">nintendo gameboy hacks</option>
+	<option class="level-0" value="18020685">nintendo hacks</option>
+	<option class="level-0" value="4992726">nintendo wii hacks</option>
+	<option class="level-0" value="118011206">Nook Hacks</option>
+	<option class="level-0" value="114556430">palm pre hacks</option>
+	<option class="level-0" value="245123">parts</option>
+	<option class="level-0" value="10969081">peripherals hacks</option>
+	<option class="level-0" value="16325149">phone hacks</option>
+	<option class="level-0" value="10969088">playstation hacks</option>
+	<option class="level-0" value="2060">podcasts</option>
+	<option class="level-0" value="10969096">portable audio hacks</option>
+	<option class="level-0" value="10969099">portable video hacks</option>
+	<option class="level-0" value="588444">psp hacks</option>
+	<option class="level-0" value="23971578">radio hacks</option>
+	<option class="level-0" value="47">rants</option>
+	<option class="level-0" value="69218551">Raspberry Pi</option>
+	<option class="level-0" value="21870780">repair hacks</option>
+	<option class="level-0" value="212824350">Retrotechtacular</option>
+	<option class="level-0" value="309">reviews</option>
+	<option class="level-0" value="10969101">robots hacks</option>
+	<option class="level-0" value="30302">roundup</option>
+	<option class="level-0" value="10969111">security hacks</option>
+	<option class="level-0" value="268522">slider</option>
+	<option class="level-0" value="2301">Software Development</option>
+	<option class="level-0" value="3796421">software hacks</option>
+	<option class="level-0" value="10969116">solar hacks</option>
+	<option class="level-0" value="10969121">tablet pcs hacks</option>
+	<option class="level-0" value="3075183">teardown</option>
+	<option class="level-0" value="12936984">Tech Hacks</option>
+	<option class="level-0" value="227104736">The Hackaday Prize</option>
+	<option class="level-0" value="10969130">tool hacks</option>
+	<option class="level-0" value="25277004">toy hacks</option>
+	<option class="level-0" value="10969134">transportation hacks</option>
+	<option class="level-0" value="1">Uncategorized</option>
+	<option class="level-0" value="3184456">video hacks</option>
+	<option class="level-0" value="34942364">Virtual Reality</option>
+	<option class="level-0" value="50802420">weapons hacks</option>
+	<option class="level-0" value="12552193">wearable hacks</option>
+	<option class="level-0" value="39510952">Weekly roundup</option>
+	<option class="level-0" value="4891215">wireless hacks</option>
+	<option class="level-0" value="7079455">xbox hacks</option>
+</select>
+
+<script type='text/javascript'>
+/* <![CDATA[ */
+	var dropdown = document.getElementById("cat");
+	function onCatChange() {
+		if ( dropdown.options[dropdown.selectedIndex].value > 0 ) {
+			location.href = "http://hackaday.com/?cat="+dropdown.options[dropdown.selectedIndex].value;
+		}
+	}
+	dropdown.onchange = onCatChange;
+/* ]]> */
+</script>
+
+</aside><aside id="hackadayrecentposts-3" class="widget widget-recent-posts"><h1 class="widget-title">Our Columns</h1>
+	<ul>
+			<li>
+			<a href="http://hackaday.com/2015/02/13/ask-hackaday-are-conductive-inks-going-to-make-it/" class="recent-image">
+						<img src="https://hackadaycom.files.wordpress.com/2015/02/ask-conductive-ink-thumb.png?w=300&#038;h=300" alt="">
+			</a>
+			<div class="entry-intro">
+				<h2>
+					<a href="http://hackaday.com/2015/02/13/ask-hackaday-are-conductive-inks-going-to-make-it/">Ask Hackaday: Are Conductive Inks Going to Make It?</a>
+				</h2>
+				<a href="http://hackaday.com/2015/02/13/ask-hackaday-are-conductive-inks-going-to-make-it//#comments" class="comment-link">
+					<span class="icon-hackaday icon-hackaday-comment"></span> 41 Comments				</a>
+			</div>
+		</li>
+			<li>
+			<a href="http://hackaday.com/2015/02/13/hacklet-34-satellite-projects/" class="recent-image">
+						<img src="https://hackadaycom.files.wordpress.com/2014/12/hacklet-thumbnail.png?w=300&#038;h=300" alt="">
+			</a>
+			<div class="entry-intro">
+				<h2>
+					<a href="http://hackaday.com/2015/02/13/hacklet-34-satellite-projects/">Hacklet 34 &#8211; Satellite Projects</a>
+				</h2>
+				<a href="http://hackaday.com/2015/02/13/hacklet-34-satellite-projects//#comments" class="comment-link">
+					<span class="icon-hackaday icon-hackaday-comment"></span> 11 Comments				</a>
+			</div>
+		</li>
+			<li>
+			<a href="http://hackaday.com/2015/02/10/3d-printering-hobbs-meters-and-3d-printer-reliability/" class="recent-image">
+						<img src="https://hackadaycom.files.wordpress.com/2015/01/printeringthumb.jpg?w=300&#038;h=300" alt="">
+			</a>
+			<div class="entry-intro">
+				<h2>
+					<a href="http://hackaday.com/2015/02/10/3d-printering-hobbs-meters-and-3d-printer-reliability/">3D Printering: Hobbs Meters And 3D Printer Reliability</a>
+				</h2>
+				<a href="http://hackaday.com/2015/02/10/3d-printering-hobbs-meters-and-3d-printer-reliability//#comments" class="comment-link">
+					<span class="icon-hackaday icon-hackaday-comment"></span> 38 Comments				</a>
+			</div>
+		</li>
+			<li>
+			<a href="http://hackaday.com/2015/02/10/retrotechtacular-multi-purpose-military-magazines-make-maintenance-memorable/" class="recent-image">
+						<img src="https://hackadaycom.files.wordpress.com/2015/02/ps-army-mag-thumb.png?w=300&#038;h=300" alt="">
+			</a>
+			<div class="entry-intro">
+				<h2>
+					<a href="http://hackaday.com/2015/02/10/retrotechtacular-multi-purpose-military-magazines-make-maintenance-memorable/">Retrotechtacular: Multi-Purpose Military Magazines Make Maintenance Memorable</a>
+				</h2>
+				<a href="http://hackaday.com/2015/02/10/retrotechtacular-multi-purpose-military-magazines-make-maintenance-memorable//#comments" class="comment-link">
+					<span class="icon-hackaday icon-hackaday-comment"></span> 16 Comments				</a>
+			</div>
+		</li>
+			<li>
+			<a href="http://hackaday.com/2015/02/09/ask-hackaday-bringing-your-design-to-market/" class="recent-image">
+						<img src="https://hackadaycom.files.wordpress.com/2015/02/vumeter.jpg?w=300&#038;h=300" alt="">
+			</a>
+			<div class="entry-intro">
+				<h2>
+					<a href="http://hackaday.com/2015/02/09/ask-hackaday-bringing-your-design-to-market/">Ask Hackaday: Bringing Your Design to Market</a>
+				</h2>
+				<a href="http://hackaday.com/2015/02/09/ask-hackaday-bringing-your-design-to-market//#comments" class="comment-link">
+					<span class="icon-hackaday icon-hackaday-comment"></span> 19 Comments				</a>
+			</div>
+		</li>
+		</ul>
+	<a href="http://hackaday.com/category/hackaday-columns/">More from this category</a>
+	</aside><aside id="recent-comments-2" class="widget widget_recent_comments"><h1 class="widget-title">Recent comments</h1>				<ul id="recentcomments">
+											<li class="recentcomments">
+							Anthony on <a href="http://hackaday.com/2015/02/13/ask-hackaday-are-conductive-inks-going-to-make-it/comment-page-1/#comment-2437032">Ask Hackaday: Are Conductive Inks Going to Make It?</a>						</li>
+
+												<li class="recentcomments">
+							<a href='http://www.mindhive.co.nz' rel='external nofollow' class='url'>Dion</a> on <a href="http://hackaday.com/2015/02/13/ask-hackaday-are-conductive-inks-going-to-make-it/comment-page-1/#comment-2437022">Ask Hackaday: Are Conductive Inks Going to Make It?</a>						</li>
+
+												<li class="recentcomments">
+							Anthony on <a href="http://hackaday.com/2015/02/13/ask-hackaday-are-conductive-inks-going-to-make-it/comment-page-1/#comment-2437019">Ask Hackaday: Are Conductive Inks Going to Make It?</a>						</li>
+
+												<li class="recentcomments">
+							Big Dave on <a href="http://hackaday.com/2015/02/13/teletext-on-a-raspi-with-zero-additional-parts/comment-page-1/#comment-2437012">Teletext on a Raspi With Zero Additional Parts</a>						</li>
+
+												<li class="recentcomments">
+							mjrippe on <a href="http://hackaday.com/2015/02/13/an-adventure-into-android-makes-the-vic-20-speak/comment-page-1/#comment-2437007">An Adventure into Android Makes the VIC-20 Speak</a>						</li>
+
+												<li class="recentcomments">
+							<a href='http://www.shutupfatty.co.uk' rel='external nofollow' class='url'>Narom</a> on <a href="http://hackaday.com/2015/02/02/suburu-dash-mounted-nexus-7-looks-like-stock/comment-page-1/#comment-2437004">Suburu Dash Mounted Nexus 7 Looks Like Stock</a>						</li>
+
+												<li class="recentcomments">
+							Joe Bonasses on <a href="http://hackaday.com/2015/02/12/building-things-with-lean-pipe/comment-page-1/#comment-2437001">Building Things with Lean Pipe</a>						</li>
+
+												<li class="recentcomments">
+							mike on <a href="http://hackaday.com/2015/02/13/ask-hackaday-are-conductive-inks-going-to-make-it/comment-page-1/#comment-2436999">Ask Hackaday: Are Conductive Inks Going to Make It?</a>						</li>
+
+												<li class="recentcomments">
+							three_d_dave on <a href="http://hackaday.com/2015/02/12/ridiculously-complicated-home-automation-made-simple/comment-page-1/#comment-2436998">Ridiculously Complicated Home Automation Made Simple</a>						</li>
+
+												<li class="recentcomments">
+							<a href='http://localroger.com' rel='external nofollow' class='url'>localroger</a> on <a href="http://hackaday.com/2015/02/13/teletext-on-a-raspi-with-zero-additional-parts/comment-page-1/#comment-2436995">Teletext on a Raspi With Zero Additional Parts</a>						</li>
+
+										</ul>
+				</aside><aside id="hackadayfeed-2" class="widget widget-hackaday-feed"><h1 class="widget-title">Now on Hackaday.io</h1>
+			<ul>
+									<li><a href="http://www.hackaday.io/hacker/51007">Mcb has updated their profile.</a></li>
+										<li><a href="http://www.hackaday.io/hacker/51005">miltonvarela.79 has updated their profile.</a></li>
+										<li><a href="http://www.hackaday.io/contest/4200/log/13930#j-discussion-18347">Rollyn01 wrote a comment on contest log Caption CERN Contest Week 2.</a></li>
+										<li><a href="http://www.hackaday.io/hacker/51004">ewerness has updated their profile.</a></li>
+										<li><a href="http://www.hackaday.io/hacker/51003">jorge has updated their profile.</a></li>
+										<li><a href="http://www.hackaday.io/hacker/51001">morrie has updated their profile.</a></li>
+										<li><a href="http://www.hackaday.io/project/2367-DoomsdayDevice#j-discussion-18346">Joakim wrote a reply on Doomsday Device.</a></li>
+										<li><a href="http://www.hackaday.io/project/4328-log-arduino-output-for-days-with-a-beaglebone">tamberg has added a new project titled Log Arduino output for days with a BeagleBone.</a></li>
+										<li><a href="http://www.hackaday.io/hacker/51000">dlpes2005 has updated their profile.</a></li>
+										<li><a href="http://www.hackaday.io/hacker/50999">Geoffrey Gilson has updated their profile.</a></li>
+						</ul>
+	</aside>
+    <div class="sidebar-ads-holder">
+        <script type='text/javascript'>
+            /* [id427] 160x600 */
+            OA_show(427);
+        </script>
+    </div>
+
+</div><!-- #secondary -->
+
+    </div><!-- #content -->
+
+</div><!-- #page -->
+
+<footer id="colophon" class="site-footer" role="contentinfo">
+    <div id="footer" class="site-footer-container">
+
+        <a href="http://hackaday.com/" rel="home">
+            <img src="https://s0.wp.com/wp-content/themes/vip/hackaday-2/img/logo.png" alt="Logo" class="logo-img">
+        </a>
+
+        <div class="menu-footer-menu-container"><ul id="menu-footer-menu" class="menu"><li id="menu-item-141410" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-141410"><a href="http://hackaday.com/">Home</a></li>
+<li id="menu-item-141411" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-141411"><a href="http://hackaday.com/blog/">Blog</a></li>
+<li id="menu-item-141412" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-141412"><a href="http://hackaday.io">Community</a></li>
+<li id="menu-item-141413" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-141413"><a href="http://store.hackaday.com">Store</a></li>
+<li id="menu-item-141414" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-141414"><a href="http://www.youtube.com/user/hackaday/videos">Video</a></li>
+<li id="menu-item-141415" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-141415"><a href="http://hackaday.com/submit-a-tip/">Submit a tip</a></li>
+<li id="menu-item-141417" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-141417"><a href="https://hackadaycom.wordpress.com/about/">About</a></li>
+<li id="menu-item-141418" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-141418"><a href="http://hackaday.com/contact-us/">Contact us</a></li>
+</ul></div>
+        <aside id="hackadayfollowus-3" class="widget widget-follow-us"><h1 class="footer-widget-title">Never miss a hack</h1>
+			<a href="https://www.facebook.com/pages/Hack-a-Day/136115233068429" target="_blank" class="icon-social icon-facebook">Follow on facebook</a>
+			<a href="https://plus.google.com/+hackaday/posts" target="_blank" class="icon-social icon-plusone">Follow on google+</a>
+			<a href="https://twitter.com/hackaday" target="_blank" class="icon-social icon-twitter">Follow on twitter</a>
+			<a href="https://www.youtube.com/user/hackaday" target="_blank" class="icon-social icon-youtube">Follow on youtube</a>
+			<a href="http://hackaday.com/blog/feed/" target="_blank" class="icon-social icon-rss">Follow on rss</a>
+			<a href="mailto:tips@hackaday.com" class="icon-social icon-contact">Contact us</a>
+		</aside>
+       <!-- Begin MailChimp Signup Form -->
+
+        <form role="subscribe" action="//hackaday.us9.list-manage.com/subscribe/post?u=dfadb71b0b15629cef5abf016&amp;id=f37880df9f" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="subscribe-form validate" target="_blank" novalidate>
+            <div id="mc_embed_signup_scroll">
+            <label for="mce-EMAIL">
+                <span>Subscribe to newsletter</span>
+                <input type="email" value="" name="EMAIL" class="subscribe-field" placeholder="Enter Email Address" id="mce-EMAIL" required>
+            </label>
+            <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+            <div style="position: absolute; left: -5000px;"><input type="text" name="b_dfadb71b0b15629cef5abf016_f37880df9f" tabindex="-1" value=""></div>
+            <input type="submit" class="subscribe-submit" id="mc-embedded-subscribe" value="Subscribe">
+            </div>
+        </form>
+
+        <!--End mc_embed_signup-->
+
+        <div class="site-info">
+            Copyright &copy; 2015            <span class="sep"> | </span>
+            <strong>Hackaday, Hack A Day, and the Skull and Wrenches Logo are Trademarks of Hackaday.com</strong>
+            <br />Powered by <a href="http://vip.wordpress.com/" rel="generator nofollow" class="powered-by-wpcom">WordPress.com VIP</a>        </div><!-- .site-info -->
+
+    </div>
+</footer><!-- #colophon -->
+
+<img src="http://analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HDay_article&amp;extra=title%3DRISC%2C+Tagged+Memory%2C+and+Minion+Cores" id="hdTrack" class="trackImg"><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42734042-1', 'auto');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+</script>
+<!-- Start Quantcast tag -->
+<script type="text/javascript">
+_qoptions={
+qacct:"p-cc6zkdHuZwUDM"
+};
+</script>
+<script type="text/javascript"
+src="http://edge.quantserve.com/quant.js"></script>
+<noscript>
+<img src="http://pixel.quantserve.com/pixel/p-cc6zkdHuZwUDM.gif"
+style="display: none;" border="0" height="1" width="1"
+alt="Quantcast"/>
+</noscript>
+
+<!-- wpcom_wp_footer -->
+	<div style="display:none">
+	</div>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var HighlanderComments = {"loggingInText":"Logging In\u2026","submittingText":"Posting Comment\u2026","postCommentText":"Post Comment","connectingToText":"Connecting to %s","commentingAsText":"%1$s: You are commenting using your %2$s account.","logoutText":"Log Out","loginText":"Log In","connectURL":"https:\/\/hackadaycom.wordpress.com\/public.api\/connect\/?action=request","logoutURL":"https:\/\/hackadaycom.wordpress.com\/wp-login.php?action=logout&_wpnonce=5be92e0099","homeURL":"http:\/\/hackaday.com\/","postID":"141634","gravDefault":"mystery","enterACommentError":"Please enter a comment","enterEmailError":"Please enter your email address here","invalidEmailError":"Invalid email address","enterAuthorError":"Please enter your name here","gravatarFromEmail":"This picture will show whenever you leave a comment. Click to customize it.","logInToExternalAccount":"Log in to use details from one of these accounts.","change":"Change","changeAccount":"Change Account","comment_registration":"","userIsLoggedIn":"","isJetpack":"0"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://s0.wp.com/_static/??/wp-content/js/jquery/jquery.autoresize.js,/wp-content/mu-plugins/highlander-comments/script.js?m=1414003384j'></script>
+<script type='text/javascript' src='https://s1.wp.com/wp-content/mu-plugins/akismet-3.0/_inc/form.js?m=1404442431g'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wpcomVipAnalytics = {"is_404":"0","is_home":"0","is_single":"1","is_front_page":"0","is_archive":"0","percentToTrack":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://s0.wp.com/_static/??-eJyNj8sKwjAQRX/IaaiPogvxW8IkbSdvm6SavzdVEMFNYHb3nnsY9giA3iXpElORCbkSyvDsVNyxnyjN0srIVgps5qi54AX2G+D4ShNP5F0zEjUFMOQ0jB5zhJHaddEQ6ua2ume5lE749Ll2DS4UvnVyaLKoxZqgt7aisMhgSmfp722bIZg8kYtsD9uyeguAO25KIowVuNlrf+yHy+F0Hnr1AjdUjSs='></script>
+<script type="text/javascript">
+// <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+</script><script src="//stats.wp.com/w.js?42" type="text/javascript" async defer></script>
+<script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'4779443','blog_tz':'-8','user_lang':'en','blog_lang':'en','user_id':'0'}]);
+_stq.push(['view', {'blog':'4779443','v':'wpcom','tz':'-8','user_id':'0','post':'141634','subd':'hackadaycom'}]);
+function st_vt() {var x=document.createElement("img");x.src="http://pixel.wp.com/g.gif?blog=4779443&v=wpcomvt&tz=-8&user_id=0&post=141634&subd=hackadaycom&rand="+Math.random();}
+_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1BNmNJfGhxNCVxUDExYmtib2E/SzdEJm0lUEtbdFU0fFk4cHZvcUFrZT90Tn4yQm1+R3NyNTdkRXFNdWdRL28yNk8rbmNjbWVqU35PYUcuJnk4TU5fX2kmQi9MYTV1SDV8UkFZN0VHM2hERFJrLDJkendkMWhSQzdvckoyWXI1eFdxfiUtL3R4ND98X29NUF9WeWdsUmJISWdIQ0xMVV1GVWd+dGRXV0tzdXxULklRUk9iRDJGa1tDPXg4RzB2P0o9eFJPNTFsYWw3M21rbV95RSx1dlZKWWFkNjhVVGYtVW1wQjBBL3xKYU4mJjlKP049bldvYUF4Rjd4cE1keDJTSWZEY2g1MzllJk5iVnFJLUkzLnM='}]);
+_stq.push([ 'clickTrackerInit', '4779443', '141634' ]);
+	</script>
+<noscript><img src="http://pixel.wp.com/b.gif?v=noscript" style="height:0px;width:0px;overflow:hidden" alt="" /></noscript>
+<script>
+if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+	
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+	
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang='ja' xmlns:fb='http://www.facebook.com/2008/fbml' xmlns:og='http://ogp.me/ns#'>
+<head>
+<meta charset='utf-8'>
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"beacon-1.newrelic.com","errorBeacon":"bam.nr-data.net","licenseKey":"05131f23c0","applicationID":"3540563","transactionName":"egpbQxAKCF4BQRhBDVABUERNFgxdEw==","queueTime":0,"applicationTime":353,"agent":"js-agent.newrelic.com/nr-536.min.js"}</script>
+<script type="text/javascript">window.NREUM||(NREUM={}),__nr_require=function(n,e,t){function r(t){if(!e[t]){var o=e[t]={exports:{}};n[t][0].call(o.exports,function(e){var o=n[t][1][e];return r(o?o:e)},o,o.exports)}return e[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<t.length;o++)r(t[o]);return r}({QJf3ax:[function(n,e){function t(n){function e(e,t,a){n&&n(e,t,a),a||(a={});for(var u=c(e),f=u.length,s=i(a,o,r),p=0;f>p;p++)u[p].apply(s,t);return s}function a(n,e){f[n]=c(n).concat(e)}function c(n){return f[n]||[]}function u(){return t(e)}var f={};return{on:a,emit:e,create:u,listeners:c,_events:f}}function r(){return{}}var o="nr@context",i=n("gos");e.exports=t()},{gos:"7eSDFh"}],ee:[function(n,e){e.exports=n("QJf3ax")},{}],3:[function(n,e){function t(n){return function(){r(n,[(new Date).getTime()].concat(i(arguments)))}}var r=n("handle"),o=n(1),i=n(2);"undefined"==typeof window.newrelic&&(newrelic=window.NREUM);var a=["setPageViewName","trackUserAction","finished","traceEvent","inlineHit","noticeError"];o(a,function(n,e){window.NREUM[e]=t("api-"+e)}),e.exports=window.NREUM},{1:12,2:13,handle:"D5DuLP"}],gos:[function(n,e){e.exports=n("7eSDFh")},{}],"7eSDFh":[function(n,e){function t(n,e,t){if(r.call(n,e))return n[e];var o=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(n,e,{value:o,writable:!0,enumerable:!1}),o}catch(i){}return n[e]=o,o}var r=Object.prototype.hasOwnProperty;e.exports=t},{}],D5DuLP:[function(n,e){function t(n,e,t){return r.listeners(n).length?r.emit(n,e,t):(o[n]||(o[n]=[]),void o[n].push(e))}var r=n("ee").create(),o={};e.exports=t,t.ee=r,r.q=o},{ee:"QJf3ax"}],handle:[function(n,e){e.exports=n("D5DuLP")},{}],XL7HBI:[function(n,e){function t(n){var e=typeof n;return!n||"object"!==e&&"function"!==e?-1:n===window?0:i(n,o,function(){return r++})}var r=1,o="nr@id",i=n("gos");e.exports=t},{gos:"7eSDFh"}],id:[function(n,e){e.exports=n("XL7HBI")},{}],G9z0Bl:[function(n,e){function t(){var n=v.info=NREUM.info;if(n&&n.licenseKey&&n.applicationID&&f&&f.body){c(d,function(e,t){e in n||(n[e]=t)}),v.proto="https"===l.split(":")[0]||n.sslForHttp?"https://":"http://",a("mark",["onload",i()]);var e=f.createElement("script");e.src=v.proto+n.agent,f.body.appendChild(e)}}function r(){"complete"===f.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=n("handle"),c=n(1),u=(n(2),window),f=u.document,s="addEventListener",p="attachEvent",l=(""+location).split("?")[0],d={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-536.min.js"},v=e.exports={offset:i(),origin:l,features:{}};f[s]?(f[s]("DOMContentLoaded",o,!1),u[s]("load",t,!1)):(f[p]("onreadystatechange",r),u[p]("onload",t)),a("mark",["firstbyte",i()])},{1:12,2:3,handle:"D5DuLP"}],loader:[function(n,e){e.exports=n("G9z0Bl")},{}],12:[function(n,e){function t(n,e){var t=[],o="",i=0;for(o in n)r.call(n,o)&&(t[i]=e(o,n[o]),i+=1);return t}var r=Object.prototype.hasOwnProperty;e.exports=t},{}],13:[function(n,e){function t(n,e,t){e||(e=0),"undefined"==typeof t&&(t=n?n.length:0);for(var r=-1,o=t-e||0,i=Array(0>o?0:o);++r<o;)i[r]=n[e+r];return i}e.exports=t},{}]},{},["G9z0Bl"]);</script>
+<meta content='telephone=no' name='format-detection'>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="XOPE3dotoikdiBcnzrZFPdjr+1OADCi5deWrTsiftOl3ynnea0IujQz7u67bFQj0B+X/j3ciMcUehPQfqjYlWQ==" />
+<link href='/assets/favicon-234ea7b3be73c9008dcace8bc625f349.ico' rel='shortcut icon' type='image/x-icon'>
+<link href='/assets/favicon-abe27310ee46bf597498bdca5647bef4.png' rel='icon' type='image/png'>
+<link href='/assets/apple-touch-icon-7dc69037fc13b0f29e5b79bf95e372a6.png' rel='apple-touch-icon'>
+<title>lowRISC - a first look - SSSSLIDE</title>
+<meta content='スライド,SlideShare,SpeakerDeck,資料,検索' name='keywords'>
+<meta content='Slides from the first public presentation on lowRISC, a project to produce a fully open-source So...' name='description'>
+<meta content='SSSSLIDE - スライドを、縦に並べて見るサイト' property='og:site_name'>
+<meta content='ja_JP' property='og:locale'>
+<meta content='100001600955932' property='fb:admins'>
+<meta content='Slides from the first public presentation on lowRISC, a project to produce a fully open-source So...' property='og:description'>
+<meta content='lowRISC - a first look - SSSSLIDE' property='og:title'>
+<meta content='https://speakerd.s3.amazonaws.com/presentations/02e26fe034f501328a4666ded83ef86d/thumb_slide_0.jpg' property='og:image'>
+<meta content='http://sssslide.com/speakerdeck.com/asb/lowrisc-a-first-look' property='og:url'>
+<link href='http://sssslide.com/speakerdeck.com/asb/lowrisc-a-first-look' rel='canonical'>
+<meta content='article' property='og:type'>
+<style>
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #fff;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+</style>
+<!-- 48849 -->
+
+<script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-1983257-18']);
+  _gaq.push(['_trackPageview']);
+  
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<link rel="stylesheet" media="screen" href="/assets/application-aa292255fd05986d4ee516d49af4cf81.css" />
+<script src="/assets/application-507d8d135c961a7fbac87b9d2225b511.js"></script>
+</head>
+<body>
+<div id='fb-root'></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/ja_JP/all.js#xfbml=1";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div id='area_all'>
+<div id='area_colorbox'></div>
+<div id='area_header'>
+<div id='area_header-inner'>
+<div class='mod_logo'>
+<p class="logo"><a href="/"><img alt="SSSSLIDE" src="/assets/mod_logo/logo-6b785e64348335b8f8b26ebb09c2078c.png" /></a>
+</p><p class='catch'>
+スライドを、縦に並べて見るサイト
+</p>
+</div>
+<div class='mod_header-search'>
+<form action="/slides" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" />
+<input type="text" name="q" class="text" autocapitalize="off" tabindex="1" placeholder="検索ワードを入力" /><button type="submit" class="submit"></button>
+</form>
+
+</div>
+<div class='mod_header-menu'>
+<ul><li class='first'><a class="js_feedback-button js_colorbox" data-remote="true" href="/pages/feedback">ご意見・ご提案</a></li><li><a class="js_colorbox" data-remote="true" href="/users/sign_in?return_to=%2Fspeakerdeck.com%2Fasb%2Flowrisc-a-first-look">ログイン</a></li></ul>
+</div>
+</div>
+</div>
+<div id='area_body'>
+<div id='area_body-inner'>
+<div class='mod_slide-title'>
+<h1>lowRISC - a first look<span class='hatebu'><a target="_blank" href="http://b.hatena.ne.jp/entry/https://speakerdeck.com/asb/lowrisc-a-first-look"><img alt="" src="http://b.hatena.ne.jp/entry/image/https://speakerdeck.com/asb/lowrisc-a-first-look" /></a></span></h1>
+</div>
+<div class='mod_slide-info'>
+<div class='line'>
+<div class='description'>
+<p>Slides from the first public presentation on lowRISC, a project to produce a fully open-source So...<span class="more-button">すべて表示</span></p>
+</div>
+<div class='description2'>
+<p>Slides from the first public presentation on lowRISC, a project to produce a fully open-source SoC. This presentation was given at ORConf in Munich on Sat 11th October 2014.</p>
+<p class='less-button-area'>
+<span class='less-button'>省略して表示</span>
+</p>
+</div>
+<div class='date float'>
+<p>
+<span class='words'>
+4ヶ月前
+</span>
+にアップロード
+</p>
+<p>
+(2014年10月11日)
+</p>
+</div>
+</div>
+<ul class='buttons'>
+<li>
+<a target="_blank" href="https://speakerdeck.com/asb">Alex Bradbury</a>
+</li>
+<li>
+<a target="_blank" href="https://speakerdeck.com/asb/lowrisc-a-first-look">Speaker Deck でスライドを見る</a>
+</li>
+<li>
+<a class="js_colorbox" data-remote="true" href="/users/sign_in?notice=1&amp;return_to=%2Fspeakerdeck.com%2Fasb%2Flowrisc-a-first-look">印刷する</a>
+</li>
+</ul>
+<ul class='report-links'>
+<li>
+<a class="js_fetch-slide-button" confirm="スライドの更新を申請します。よろしいですか？" data-remote="true" rel="nofollow" data-method="put" href="/slides/48849/fetch">スライドの更新申請</a>
+</li>
+</ul>
+</div>
+<div id='area_body-main'>
+<div class='mod_slides'>
+<div data-embed-code='&lt;script async class="speakerdeck-embed" data-id="02e26fe034f501328a4666ded83ef86d" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"&gt;&lt;/script&gt;' data-fallback-image-url='https://speakerd.s3.amazonaws.com/presentations/02e26fe034f501328a4666ded83ef86d/slide_[N].jpg' data-first-image-index='0' data-image-url='https://speakerd.s3.amazonaws.com/presentations/02e26fe034f501328a4666ded83ef86d/slide_[N].jpg' data-last-image-index='26' data-page-url='https://speakerdeck.com/asb/lowrisc-a-first-look?slide=[N+1]' data-signed-in='false' id='js_slide-area'></div>
+</div>
+<div class='mod_image-mode-button' id='js_image-mode-button'>
+<p>
+<a class="js_colorbox" data-remote="true" href="/users/sign_in?notice=1&amp;return_to=%2Fspeakerdeck.com%2Fasb%2Flowrisc-a-first-look">このスライドを縦に並べて見る</a>
+</p>
+</div>
+<div class='mod_related-slides'>
+<div class='mod_field-title2'>
+<h2>関連スライド</h2>
+</div>
+<div class='mod_slides-list'>
+<ul>
+<div class='first line'>
+<li>
+<div class='img'>
+<a href="/www.slideshare.net/erwinleo/android-hackers-handbook"><img alt="Android hacker&#39;s handbook" class="thumbnail" src="http://cdn.slidesharecdn.com/ss_thumbnails/androidhackershandbook-141115115348-conversion-gate02-thumbnail.jpg?cb=1416074131" /></a>
+</div>
+<div class='text'>
+<div class='title'>
+<a href="/www.slideshare.net/erwinleo/android-hackers-handbook">Android hacker&#39;s handbook</a>
+</div>
+<div class='info'><span class='user'>ERWIN AGUILAR</span><span class='date'>3ヶ月前</span></div>
+</div>
+<div class='hatebu'>
+<a target="_blank" href="http://b.hatena.ne.jp/entry/http://www.slideshare.net/erwinleo/android-hackers-handbook"><img alt="" src="http://b.hatena.ne.jp/entry/image/http://www.slideshare.net/erwinleo/android-hackers-handbook" /></a>
+</div>
+</li>
+<li>
+<div class='img'>
+<a href="/www.slideshare.net/mohitbishnoi/expert-c-programming-deep-c-secrets-peter-van-der-linden"><img alt="Expert c programming deep c secrets peter van der linden" class="thumbnail" src="http://cdn.slidesharecdn.com/ss_thumbnails/expertcprogrammingdeepcsecretspetervanderlinden-110129004334-phpapp02-thumbnail.jpg?cb=1296283449" /></a>
+</div>
+<div class='text'>
+<div class='title'>
+<a href="/www.slideshare.net/mohitbishnoi/expert-c-programming-deep-c-secrets-peter-van-der-linden">Expert c programming deep c secrets peter van der linden</a>
+</div>
+<div class='info'><span class='user'>Mohit Bishnoi</span><span class='date'>約4年前</span></div>
+</div>
+<div class='hatebu'>
+<a target="_blank" href="http://b.hatena.ne.jp/entry/http://www.slideshare.net/mohitbishnoi/expert-c-programming-deep-c-secrets-peter-van-der-linden"><img alt="" src="http://b.hatena.ne.jp/entry/image/http://www.slideshare.net/mohitbishnoi/expert-c-programming-deep-c-secrets-peter-van-der-linden" /></a>
+</div>
+</li>
+<li>
+<div class='img'>
+<a href="/www.slideshare.net/MohitBishnoi/expert-c-programming-deep-c-secrets-peter-van-der-linden"><img alt="Expert c programming deep c secrets peter van der linden" class="thumbnail" src="http://cdn.slidesharecdn.com/ss_thumbnails/expertcprogrammingdeepcsecretspetervanderlinden-110129004334-phpapp02-thumbnail.jpg?1296283449" /></a>
+</div>
+<div class='text'>
+<div class='title'>
+<a href="/www.slideshare.net/MohitBishnoi/expert-c-programming-deep-c-secrets-peter-van-der-linden">Expert c programming deep c secrets peter van der linden</a>
+</div>
+<div class='info'><span class='user'>Mohit Bishnoi</span><span class='date'>約4年前</span></div>
+</div>
+<div class='hatebu'>
+<a target="_blank" href="http://b.hatena.ne.jp/entry/http://www.slideshare.net/MohitBishnoi/expert-c-programming-deep-c-secrets-peter-van-der-linden"><img alt="" src="http://b.hatena.ne.jp/entry/image/http://www.slideshare.net/MohitBishnoi/expert-c-programming-deep-c-secrets-peter-van-der-linden" /></a>
+</div>
+</li>
+<li>
+<div class='img'>
+<a href="/www.slideshare.net/JimmyWilson3/cards-42262392"><img alt="PVC Cards PET paper cards contact contactless java jcop dual interface twin card gift loyalty photo id business magnetic white blank color scratch sim rewritable card tk4100 em4200 mifare s50 1k 70 ultralight desfire ev1 2k 4k 8k icode sli ntag 203 card" class="thumbnail" src="http://cdn.slidesharecdn.com/ss_thumbnails/ed9adafe-c56e-4ce6-b7c8-861ab0948d68-141202090706-conversion-gate02-thumbnail.jpg?cb=1419447716" /></a>
+</div>
+<div class='text'>
+<div class='title'>
+<a href="/www.slideshare.net/JimmyWilson3/cards-42262392">PVC Cards PET paper cards contact contactless java jcop dual interface twin card gift loyalty photo id business magnetic white blank color scratch sim rewritable card tk4100 em4200 mifare s50 1k 70 ultralight desfire ev1 2k 4k 8k icode sli ntag 203 card</a>
+</div>
+<div class='info'><span class='user'>Jimmy Wilson</span><span class='date'>2ヶ月前</span></div>
+</div>
+<div class='hatebu'>
+<a target="_blank" href="http://b.hatena.ne.jp/entry/http://www.slideshare.net/JimmyWilson3/cards-42262392"><img alt="" src="http://b.hatena.ne.jp/entry/image/http://www.slideshare.net/JimmyWilson3/cards-42262392" /></a>
+</div>
+</li>
+</div>
+</ul>
+</div>
+
+</div>
+<div class='mod_transcripts'>
+<div class='mod_field-title'>
+<h2>
+「lowRISC - a first look」の内容
+</h2>
+</div>
+<ol id='js_transcripts-area'>
+<li class='first 1' id='t1'>
+<div class='text'>
+lowRISC - a first look
+Alex Bradbury @<a class="" href="https://twitter.com/asbradbury" rel="nofollow" target="_blank">asbradbury</a> @<a class="" href="https://twitter.com/lowRISC" rel="nofollow" target="_blank">lowRISC</a>
+ORConf 2014
+</div>
+</li>
+<li class='2' id='t2'>
+<div class='text'>
+What is lowRISC?
+● An open-source SoC with a RISC-V CPU
+○ Initially targeting 40 or 28nm
+○ Released under an open, permissive license
+○ Novel security features
+○ Programmable I/O
+○ AMBA bus
+○ Performance: run Linux &#39;well&#39;
+● A Community Interest Company (i.e., we are not-for-
+profit)
+○ Intend to manufacture the SoC in volume and
+produce low-cost development boards
+</div>
+</li>
+<li class='3' id='t3'>
+<div class='text'>
+Who are we?
+● Robert Mullins - Computer Laboratory, University of Cambridge, co-
+founder of Raspberry Pi
+● Gavin Ferris - Dreamworks, Radioscape (co-founder), Aspect Capital
+(former CIO)
+● Alex Bradbury - Computer Laboratory, University of Cambridge and
+Raspberry Pi
+Technical advisory board:
+● Krste Asanovic (UC Berkeley)
+● Julius Baxter (OpenRISC)
+● Bunnie Huang (Hacker)
+● Dominic Rizzo (Google ATAP)
+● Michael Taylor (UCSD)
+</div>
+</li>
+<li class='4' id='t4'>
+<div class='text'>
+lowRISC motivation
+● A belief in open-source hardware
+● Encourage innovation and semiconductor
+startups
+● Research platform
+● The opportunity for contributors to see their
+HDL used in a mass produced SoC
+○ Regular tape-outs
+</div>
+</li>
+<li class='5' id='t5'>
+<div class='text'>
+How are we going to do this?
+● Received an initial private donation
+● Work with collaborators (e.g. Berkeley)
+● Additional funding (e.g. research councils)
+● Community
+● OpenCores IP and tools
+● Build the core dev team. Just advertised and
+filled two positions
+</div>
+</li>
+<li class='6' id='t6'>
+<div class='text'>
+Software
+● RISC-V has GCC, LLVM, glibc
+● Work with community on upstreaming these
+● Add support for lowRISC extensions
+● Target: RISC-V Debian port
+</div>
+</li>
+<li class='7' id='t7'>
+<div class='text'>
+Timeline to V1
+● Release of an initial FPGA version. Next 6
+months
+● Production of a test chip. End of 2015
+● Tape out of production silicon. 2016
+● Produce low cost development boards.
+&quot;Raspberry Pi for grown-ups&quot; :)
+</div>
+</li>
+<li class='8' id='t8'>
+<div class='text'>
+Target market and philosophy
+● 100-200k boards is ~1 month of Raspberry Pi sales
+● Hackers, tinkerers, researchers, the OSHW community
+● Target the embedded, connected world. IoT
+● Security is essential. We would be negligent to not consider how to
+improve on security features available in shipping processors
+○ Tagged memory
+○ Traditional features: RNG, crypto accelerator, encrypted off-chip
+memory, secure boot
+● Flexible IO. Flexibility of a Zynq-like platform but in software.
+○ Vendors incentivized to make low level peripherals arbitrarily different
+for lock-in and &#39;differentiation&#39;.
+</div>
+</li>
+<li class='9' id='t9'>
+<div class='text'>
+System diagram for test chip
+</div>
+</li>
+<li class='10' id='t10'>
+<div class='text'>
+Tagged memory
+Initial motivation:
+security.
+Associate each memory
+location with metadata
+(tags)
+</div>
+</li>
+<li class='11' id='t11'>
+<div class='text'>
+Shellcode injection via buffer
+overflow
+What happens if we pass an
+argument larger than the buffer?
+int main(int argc, char **argv) {
+char buffer[512];
+if (argc &gt; 1)
+strcpy(buffer, argv[1]);
+return 0;
+}
+</div>
+</li>
+<li class='12' id='t12'>
+<div class='text'>
+Shellcode injection via buffer
+overflow
+Solution: NX bit. Mark pages as being
+executable/not executable. All stack pages are
+non-executable
+What about overflows on the heap?
+</div>
+</li>
+<li class='13' id='t13'>
+<div class='text'>
+And the attacker responds with new
+tricks...
+● Return-to-libc (overwrite RA to a handy
+function like system(const char*))
+● Return-Oriented Programming (ROP) and
+variants: JOP etc
+</div>
+</li>
+<li class='14' id='t14'>
+<div class='text'>
+Respond with more software
+countermeasures
+● ASLR: randomize locations of the stack,
+heap, functions
+● Stack canaries: put a secret value on the
+stack and detect if it is overwritten
+● Software sandboxing (e.g. Android, iPhone,
+browser sandboxes)
+</div>
+</li>
+<li class='15' id='t15'>
+<div class='text'>
+Time for a new hardware counter-
+measure
+● We call this class of attacks control flow
+hijack attacks
+● All of these attacks (so far) require violating
+spatial memory safety, i.e. writing beyond
+the bounds of an object
+○ More specifically, they require overwriting a code
+pointer
+Aim: protect code pointers from overwrites
+</div>
+</li>
+<li class='16' id='t16'>
+<div class='text'>
+Does this problem matter?
+Vulnerabilities
+in the CVE
+database with
+&#39;high&#39; severity
+Source: 25 Years of
+Vulnerabilities:
+1998-2012 -
+Sourcefire www.
+sourcefire.
+com/25yearsofvulns
+</div>
+</li>
+<li class='17' id='t17'>
+<div class='text'>
+Solution: tagged memory
+● 2 tag bits per word. Storage
+overhead 2/64=~3%
+● Tag cache logically extends width
+of word to 66 bits
+● Tag bits copied into L2 and L1
+cache lines
+</div>
+</li>
+<li class='18' id='t18'>
+<div class='text'>
+Protecting the return address
+Apply tag bits to the
+return address. If the
+buffer overflows, an
+exception is triggered.
+Do the same for
+VTable pointers.
+</div>
+</li>
+<li class='19' id='t19'>
+<div class='text'>
+But what about use-after-free?
+● A temporal memory safety issue
+● Problem: we can protect the vtable pointer for the
+lifetime of an object, but if the object is used after it was
+freed, the attacker could control the contents of that
+memory location.
+● Solution: Check presence of tag bits. Augment with
+existing segregated allocator techniques
+● A good example of the effort attackers are willing to go
+to: <a href="http://blog.exodusintel.com/2013/11/26/browser-weakest-byte/" rel="nofollow" target="_blank">http://blog.exodusintel.com/2013/11/26/browser-weakest-byte/</a>
+</div>
+</li>
+<li class='20' id='t20'>
+<div class='text'>
+Other uses of tagged memory
+We implement general purpose tagged memory that can be configured for use
+in a wide range of different scenarios:
+● Infinite memory watchpoints
+● Better version of traditional canaries
+● Garbage collection
+● Accelerate AddressSanitizer/ThreadSanitizer/MemorySanitizer
+○ If larger tags are required, update shadow memory in the exception
+handler
+● Locks on every word
+● Apply tag bits to instructions to mark valid targets of indirect branches
+</div>
+</li>
+<li class='21' id='t21'>
+<div class='text'>
+Compatibility and implementation
+tasks
+Requirements:
+● Addition of tag memory cache and widening of cache lines
+● New instructions to manipulate tags
+● Compiler modifications to protect and check RA and vtable pointers
+● Modify memory allocator to clear tags upon free, and modify memcpy and
+memmove to copy tags
+● Update kernel virtual memory system to persist tag bits when moving a
+page to secondary storage
+Compatibility: metadata in binaries can be used to rewrite instructions at load
+time
+</div>
+</li>
+<li class='22' id='t22'>
+<div class='text'>
+Minions for programmable I/O
+</div>
+</li>
+<li class='23' id='t23'>
+<div class='text'>
+Programmable I/O motivation
+● Flexibility and ability to add completely new interfaces
+● Ease to program (vs programmable logic)
+● Off-load work from main core
+○ Do more work close to I/O
+○ Combine with tagged memory for more complex
+security policies/checks
+● Filter I/O to only wake up the main core when needed
+● Avoid writing HDL for all controllers and interfaces.
+</div>
+</li>
+<li class='24' id='t24'>
+<div class='text'>
+Related work
+● Idea goes back at least to the CDC6600 multi-threaded
+I/O processors (&#39;peripheral processor units&#39;)
+● Motorola 68332, 68302 both had configurable,
+programmable &#39;timer units&#39;
+● TI PRUs
+● XMOS
+● NXP LPC4370 (M4 and 2xM0 for peripherals)
+● ...
+</div>
+</li>
+<li class='25' id='t25'>
+<div class='text'>
+Minion architectural considerations
+● I/O &#39;shim&#39;
+○ Bit-banging pins directly would be painful.
+○ Provide a small amount of configurable logic, buffers, timers, and
+clocks to reduce overheads
+○ Support routing physical pins to different cores
+● Timing/events
+○ Execute out of scratchpads to help provide bounded execution time
+○ Precise timing (e.g. wait for counter)
+● Considering multi-threaded operation and low-latency communication with
+main core (e.g. FIFO links)
+● Minions are not coherent between themselves, but are coherent with main
+processors.
+</div>
+</li>
+<li class='26' id='t26'>
+<div class='text'>
+Roadmap
+● Test chip: Rocket x (1 or 2) + IO + memory controller + tagged memory.
+Reusable research BGA package from UCSD
+● V1: Complete, secure embedded SoC appropriate for headless
+applications.
+● Ultimate ambition is an SoC with a broad set of features including GPU,
+appropriate for a mobile phone or set-top box. V1 is a stepping stone
+towards that goal.
+What is success for a project like lowRISC?
+</div>
+</li>
+<li class='27' id='t27'>
+<div class='text'>
+How you can help
+● Join our efforts: http://www.lowrisc.org
+● Join our announcement and discussion lists
+● Help direct our plans
+● FPGA version to come soon
+Questions?
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div id='area_body-sub'>
+<div class='mod_side-ad'>
+<script>
+  google_ad_client = "ca-pub-9188810637980301";
+  google_ad_slot = "0313771849";
+  google_ad_width = 300;
+  google_ad_height = 250;
+</script>
+<script src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+
+</div>
+<div>
+<div class='mod_field-title'>
+<h2>このスライドを共有する</h2>
+</div>
+<div class='mod_share-buttons'>
+<ul><li><a class="hatena-bookmark-button" title="このエントリーをはてなブックマークに追加" data-hatena-bookmark-layout="simple" href="http://b.hatena.ne.jp/entry/https://speakerdeck.com/asb/lowrisc-a-first-look"><img alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" src="http://b.st-hatena.com/images/entry-button/button-only.gif" /></a><script src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script><span class='hatebu'><a target="_blank" href="http://b.hatena.ne.jp/entry/https://speakerdeck.com/asb/lowrisc-a-first-look"><img alt="" src="http://b.hatena.ne.jp/entry/image/https://speakerdeck.com/asb/lowrisc-a-first-look" /></a></span></li><li>
+<a class="twitter-share-button" data-url="https://speakerdeck.com/asb/lowrisc-a-first-look" data-text="lowRISC - a first look [embedded in http://sssslide.com/speakerdeck.com/asb/lowrisc-a-first-look]" data-lang="ja" href="https://twitter.com/share">ツイート</a>
+<script>
+  !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+</script>
+</li>
+<li>
+<div class='fb-like' data-href='https://speakerdeck.com/asb/lowrisc-a-first-look' data-layout='button_count' data-send='false' data-show-faces='false' data-width='250'></div>
+</li>
+<li>
+<div class='g-plusone' data-href='https://speakerdeck.com/asb/lowrisc-a-first-look' data-size='medium'></div>
+<script>
+  window.___gcfg = {lang: 'ja'};
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+</li>
+<li class='provider-link'>
+<a target="_blank" href="https://speakerdeck.com/asb/lowrisc-a-first-look">Speaker Deck でスライドを確認</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='mod_side-feedback-link'>
+<a class="js_feedback-button js_colorbox" data-remote="true" href="/pages/feedback">ご意見・ご提案を送信する</a>
+</div>
+
+</div>
+
+</div>
+</div>
+<div id='area_footer'>
+<div id='area_footer-inner'>
+<div class='mod_footer-menu'>
+<ul><li class='first'><a href="/">トップページ</a></li><li><a href="/slides">スライド一覧</a></li><li><a href="/tags">タグ一覧</a></li><li><a encode="javascript" href="mailto:info+sssslide@userfirst.co.jp">お問い合わせ</a></li><li><a target="_blank" href="http://userfirst.co.jp/">運営会社</a></li></ul>
+</div>
+<div class='mod_copyright'>
+<p class='first'>
+Copyright &copy; Userfirst.
+</p>
+<p>
+スライドの著作権は、各スライド作成者に所属します。転載を希望されない場合は、ご連絡いただければ削除いたします。
+</p>
+</div>
+</div>
+</div>
+</div>
+<a id="js_return-button" href="#area_all"><img alt="↑" src="/assets/js_return-button/arrow-2ecdc3d4e350a3c878a15eb8d56067c3.png" /></a>
+</body>
+</html>

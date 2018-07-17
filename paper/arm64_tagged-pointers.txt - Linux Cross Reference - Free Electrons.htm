@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Linux/Documentation/arm64/tagged-pointers.txt - Linux Cross Reference - Free Electrons</title>
+<link rel="stylesheet" href="/style.css" type="text/css" media="screen" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta description="Linux Cross-Reference (LXR) service by Free Electrons. The easiest way to study Linux kernel sources. Available for all recent releases." />
+<base href="http://lxr.free-electrons.com/"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+<div id="wrapper2">
+<div id="header">
+
+	<div id="logo">
+		<h1>Linux Cross Reference</h1>
+		<h2><a href="http://free-electrons.com">Free Electrons</a></h2>
+		<h2>Embedded Linux Experts</h2>
+		<p>
+		 &nbsp;&bull;&nbsp;<b><i>source navigation</i></b> &nbsp;&bull;&nbsp;<a href="diff/Documentation/arm64/tagged-pointers.txt">diff markup</a> &nbsp;&bull;&nbsp;<a href="ident">identifier search</a> &nbsp;&bull;&nbsp;<a href="search">freetext search</a> &nbsp;&bull;&nbsp;
+		</p>
+	</div>
+</div>
+
+<div id="topbar">
+  
+  <p>Version: &nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=2.0.40">2.0.40</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=2.2.26">2.2.26</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=2.4.37">2.4.37</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.2">3.2</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.3">3.3</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.4">3.4</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.5">3.5</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.6">3.6</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.7">3.7</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.8">3.8</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.9">3.9</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.10">3.10</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.11">3.11</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.12">3.12</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.13">3.13</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.14">3.14</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.15">3.15</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.16">3.16</a>&nbsp;<a href="source/Documentation/arm64/tagged-pointers.txt?v=3.17">3.17</a>&nbsp;<b><i>3.18</i></b></p>
+  
+</div>
+
+<h1><a href="source/">Linux</a>/<a href="source/Documentation/">Documentation</a>/<a href="source/Documentation/arm64/">arm64</a>/<a href="source/Documentation/arm64/tagged-pointers.txt">tagged-pointers.txt</a></h1>
+<div id="lxrcode"><pre>  <a name="L1" href="source/Documentation/arm64/tagged-pointers.txt#L1">1</a>                 Tagged virtual addresses in AArch64 Linux
+  <a name="L2" href="source/Documentation/arm64/tagged-pointers.txt#L2">2</a>                 =========================================
+  <a name="L3" href="source/Documentation/arm64/tagged-pointers.txt#L3">3</a> 
+  <a name="L4" href="source/Documentation/arm64/tagged-pointers.txt#L4">4</a> Author: Will Deacon <a href="mailto:will.deacon@arm.com">&lt;will.deacon@arm.com&gt;</a>
+  <a name="L5" href="source/Documentation/arm64/tagged-pointers.txt#L5">5</a> Date  : 12 June 2013
+  <a name="L6" href="source/Documentation/arm64/tagged-pointers.txt#L6">6</a> 
+  <a name="L7" href="source/Documentation/arm64/tagged-pointers.txt#L7">7</a> This document briefly describes the provision of tagged virtual
+  <a name="L8" href="source/Documentation/arm64/tagged-pointers.txt#L8">8</a> addresses in the AArch64 translation system and their potential uses
+  <a name="L9" href="source/Documentation/arm64/tagged-pointers.txt#L9">9</a> in AArch64 Linux.
+ <a name="L10" href="source/Documentation/arm64/tagged-pointers.txt#L10">10</a> 
+ <a name="L11" href="source/Documentation/arm64/tagged-pointers.txt#L11">11</a> The kernel configures the translation tables so that translations made
+ <a name="L12" href="source/Documentation/arm64/tagged-pointers.txt#L12">12</a> via TTBR0 (i.e. userspace mappings) have the top byte (bits 63:56) of
+ <a name="L13" href="source/Documentation/arm64/tagged-pointers.txt#L13">13</a> the virtual address ignored by the translation hardware. This frees up
+ <a name="L14" href="source/Documentation/arm64/tagged-pointers.txt#L14">14</a> this byte for application use, with the following caveats:
+ <a name="L15" href="source/Documentation/arm64/tagged-pointers.txt#L15">15</a> 
+ <a name="L16" href="source/Documentation/arm64/tagged-pointers.txt#L16">16</a>         (1) The kernel requires that all user addresses passed to EL1
+ <a name="L17" href="source/Documentation/arm64/tagged-pointers.txt#L17">17</a>             are tagged with tag 0x00. This means that any syscall
+ <a name="L18" href="source/Documentation/arm64/tagged-pointers.txt#L18">18</a>             parameters containing user virtual addresses *must* have
+ <a name="L19" href="source/Documentation/arm64/tagged-pointers.txt#L19">19</a>             their top byte cleared before trapping to the kernel.
+ <a name="L20" href="source/Documentation/arm64/tagged-pointers.txt#L20">20</a> 
+ <a name="L21" href="source/Documentation/arm64/tagged-pointers.txt#L21">21</a>         (2) Non-zero tags are not preserved when delivering signals.
+ <a name="L22" href="source/Documentation/arm64/tagged-pointers.txt#L22">22</a>             This means that signal handlers in applications making use
+ <a name="L23" href="source/Documentation/arm64/tagged-pointers.txt#L23">23</a>             of tags cannot rely on the tag information for user virtual
+ <a name="L24" href="source/Documentation/arm64/tagged-pointers.txt#L24">24</a>             addresses being maintained for fields inside siginfo_t.
+ <a name="L25" href="source/Documentation/arm64/tagged-pointers.txt#L25">25</a>             One exception to this rule is for signals raised in response
+ <a name="L26" href="source/Documentation/arm64/tagged-pointers.txt#L26">26</a>             to watchpoint debug exceptions, where the tag information
+ <a name="L27" href="source/Documentation/arm64/tagged-pointers.txt#L27">27</a>             will be preserved.
+ <a name="L28" href="source/Documentation/arm64/tagged-pointers.txt#L28">28</a> 
+ <a name="L29" href="source/Documentation/arm64/tagged-pointers.txt#L29">29</a>         (3) Special care should be taken when using tagged pointers,
+ <a name="L30" href="source/Documentation/arm64/tagged-pointers.txt#L30">30</a>             since it is likely that C compilers will not hazard two
+ <a name="L31" href="source/Documentation/arm64/tagged-pointers.txt#L31">31</a>             virtual addresses differing only in the upper byte.
+ <a name="L32" href="source/Documentation/arm64/tagged-pointers.txt#L32">32</a> 
+ <a name="L33" href="source/Documentation/arm64/tagged-pointers.txt#L33">33</a> The architecture prevents the use of a tagged PC, so the upper byte will
+ <a name="L34" href="source/Documentation/arm64/tagged-pointers.txt#L34">34</a> be set to a sign-extension of bit 55 on exception return.
+</pre></div><p>
+This page was automatically generated by <a href="http://lxr.linux.no">LXR</a> 0.3.1 (<a href="http://free-electrons.com/pub/source/lxr-0.3.1-fe1.tar.bz2">source</a>).
+&nbsp;&bull;&nbsp;
+Linux is a registered trademark of Linus Torvalds
+&nbsp;&bull;&nbsp;
+<a href="http://free-electrons.com/company/contact/">Contact us</a>
+</p>
+
+<div id="menu">
+<ul>
+   <li><a href="http://free-electrons.com/">Home</a></li>
+   <li><a href="http://free-electrons.com/development/" title="Development">Development</a></li>
+   <li><a href="http://free-electrons.com/services/" title="Services">Services</a></li>
+   <li><a href="http://free-electrons.com/training/" title="Training">Training</a></li>
+   <li><a href="http://free-electrons.com/docs/" title="Docs">Docs</a></li>
+   <li><a href="http://free-electrons.com/community/" title="Community">Community</a></li>
+   <li><a href="http://free-electrons.com/company/" title="Company">Company</a></li>
+   <li><a href="http://free-electrons.com/blog/" title="Blog">Blog</a></li>
+</ul>
+</div>
+
+</div>
+</div>
+</body>
+</html>

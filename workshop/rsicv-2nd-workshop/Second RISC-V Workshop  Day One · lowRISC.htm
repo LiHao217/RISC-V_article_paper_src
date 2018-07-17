@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+    <head>
+        
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+        <title>Second RISC-V Workshop: Day One &middot; lowRISC</title>
+        <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' type='text/css'>
+        <link rel="stylesheet" href="http://www.lowrisc.org/libraries/normalize.3.0.1.css" />
+        <link rel="stylesheet" href="http://www.lowrisc.org/css/liquorice.css" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="alternate" href="http://www.lowrisc.org/index.xml" type="application/rss+xml" title="lowRISC" />
+        <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-53520714-1', 'auto');
+        ga('send', 'pageview');
+      </script>
+  </head>
+    <body class="li-body">
+
+<header class="li-page-header">
+  <div class="li-header-top">
+  </div>
+    <div class="container">
+        <div class="row">
+            <div class="sixteen columns">
+                <div class="li-brand li-left">
+                
+                <a href="http://www.lowrisc.org/"><img src="http://www.lowrisc.org/img/lowrisc_header_logo.png"/></a></div>
+                <div class="li-menu li-left">
+                    <span class="li-menu-icon" onclick="javascript:toggle('menu');">&#9776;</span>
+                    <ul id="menu2" class="li-menu-items">
+                        
+                            <li><a href="/"> Home </a></li>
+                        
+                            <li><a href="/about/"> About </a></li>
+                        
+                            <li><a href="/faq/"> FAQ </a></li>
+                        
+                            <li><a href="/docs/"> Docs </a></li>
+                        
+                            <li><a href="/community/"> Community </a></li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="sixteen columns">
+                <ul id="menu" class="li-menu-items li-menu-mobile">
+                    
+                        <li><a href="/"> Home </a></li>
+                    
+                        <li><a href="/about/"> About </a></li>
+                    
+                        <li><a href="/faq/"> FAQ </a></li>
+                    
+                        <li><a href="/docs/"> Docs </a></li>
+                    
+                        <li><a href="/community/"> Community </a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="sixteen columns">
+                <article class="li-article">
+                
+                    <header class="li-article-header">
+                        <h1 class="li-article-title">Second RISC-V Workshop: Day One</h1>
+                        <span class="li-article-taxonomies">
+                            
+
+                            
+                        </span>
+                        
+                        
+                        <time class="li-article-date">Monday, June 29, 2015</time>
+                        
+                    </header>
+                    <section>
+                        
+
+<p>The <a href="http://riscv.org/workshop-jun2015.html">second RISC-V workshop</a> is going
+on today and tomorrow in Berkeley, California. I&rsquo;ll be keeping a semi-live
+blog of talks and announcements throughout the day.</p>
+
+<h2 id="introductions-and-welcome-krste-asanović:1198e896ab6f8fa7b8bfab04cfcd8c73">Introductions and welcome: Krste Asanović</h2>
+
+<ul>
+<li>The beginning of Krste&rsquo;s talk will be familiar for anyone who&rsquo;s seen an
+introduction to RISC-V before. Pleasingly, there are a lot of new faces here
+at the workshop so the introduction of course makes a lot of sense.</li>
+<li>Although the core RISC-V effort is focused on the ISA specification, there
+is interest in looking to expand this to look at how to standardise access to
+I/O etc.</li>
+<li>RV32E is a &ldquo;pre-emptive strike&rdquo; at those who might be tempted to fragment
+the ISA space for very small cores. It is a 16-register subset of RV32I.</li>
+<li>The compressed instruction set has been released since the last workshop,
+there will be talk later today about it. It gives 25-30% code size reduction,
+and surprisingly there&rsquo;s still lots of 16-bit encode space for additional
+extensions.</li>
+<li>Krste makes the point that AArch64 has 8 addressing modes vs just 1 for
+RISC-V. The comparison of the size of the GCC/LLVM backends is perhaps less
+interesting given that the ARM backend actually has rather a lot more
+optimisations.</li>
+<li>&ldquo;Simplicity breeds contempt&rdquo;. &ldquo;So far, no evidence more complex ISA is
+justified for general code&rdquo;</li>
+<li>Will be talking about a Cray-style vector ISA extension later today (i.e.<br />
+not packed-SIMD ISA or GPU-style).</li>
+<li>Rocket core is only about ~12kloc of Chisel in total. ~5kloc for the
+processor, ~2kloc for floating-point units, ~4.6kloc for &lsquo;uncore&rsquo; (coherence
+hubs, L2, caches etc).</li>
+<li>State of the RISC-V Nation: many companies &lsquo;kicking the tires&rsquo;. If you were
+thinking of designing your own RISC ISA for project, then use RISC-V. If you
+need a complete working support core <em>today</em> then pay $M for an industry core.<br />
+If you need it in 6 months, then consider spending that $M on RISC-V
+development.</li>
+<li>RISC-V Foundation is being formed, a 501&copy;(6), with Rick O&rsquo;Conner as
+Executive Director. The mission statement is &ldquo;to standardize, protect, and
+promote the free and open RISC-V instruction set architecture and its hardware
+and software ecosystem for use in all computing devices&rdquo;. Plan is to publicly
+announce before HotChips later this year and is actively recruiting companies
+who want to be &lsquo;founding&rsquo; members. You will need to be a member of the
+foundation in good standing to use the RISC-V trademark (unless you are a
+non-profit).</li>
+</ul>
+
+<h2 id="an-update-on-lowrisc-alex-bradbury:1198e896ab6f8fa7b8bfab04cfcd8c73">An update on lowRISC: Alex Bradbury</h2>
+
+<ul>
+<li>Many thanks to the audience for all the questions. My slides are <a href="https://speakerdeck.com/asb/an-update-on-lowrisc">available
+here</a>.</li>
+<li>Unfortunately the SHAKTI project team from India have been caught up in the
+malfunctioning US State Department computer systems and so haven&rsquo;t been able
+to get visas to give their talk</li>
+</ul>
+
+<h2 id="compressed-extension-proposal-david-patterson:1198e896ab6f8fa7b8bfab04cfcd8c73">Compressed Extension Proposal: David Patterson</h2>
+
+<ul>
+<li>Looked at existing compressed instruction sets, and tried to simplify things
+and throw away ideas that add complexity but provide little benefit.</li>
+<li>Ended up with a specification that is pleasingly minimal, with each
+instruction decoding to a single RV32 instruction.</li>
+<li>Keen on community feedback on additional RVC instructions. Identified a set
+of 24 that have little impact on current compiler-generated code, but could be
+useful for some use cases.</li>
+<li>You can read the RVC spec
+<a href="http://riscv.org/spec/riscv-compressed-spec-v1.7.pdf">here</a>.</li>
+<li>Points out that Thumb2 is only a 32-bit address ISA. Although it is slightly
+smaller than RV32C, the RISC-V compressed spec has the benefit of supporting
+64-bit addressing.</li>
+<li>Rather than adding the complexity of load multiple and store multiple,
+experimented with adding calls to a function that does the same thing. This
+hurts performance, but gives a large benefit for code size.</li>
+<li>One question was on the power consumption impact. Don&rsquo;t have numbers on that<br />
+yet.</li>
+<li>Should we require the compressed instruction set? Don&rsquo;t want to add it to
+the minimal &lsquo;I&rsquo; instruction set, but could add it to the standard expected by
+Linux.</li>
+</ul>
+
+<h2 id="goblincore64-a-risc-v-extension-for-data-intensive-computing-john-leidel:1198e896ab6f8fa7b8bfab04cfcd8c73">GoblinCore64. A RISC-V Extension for Data Intensive Computing: John Leidel</h2>
+
+<ul>
+<li>Building a processor design aimed at data intensive algorithms and
+applications. Applications tend to be very cache unfriendly.</li>
+<li>GC64 (Goblin Core) has a thread control unit. A very small micro-coded unit
+(e.g. implement RV64C) is microcoded to perform the contest switching task.</li>
+<li>Have added user-visible registers for thread id, thread context, task
+exception register etc etc.</li>
+<li>The GKEY supervisor register contains a 64-bit key loaded by the kernel. It
+determines whether a task may spawn and execute work on neighboring task
+processors, providing a very rudimentary protection mechanism.</li>
+<li>Making use of RV128I - it&rsquo;s not just there for fun!</li>
+<li>Support various instruction extensions, e.g. IWAIT, SWPAWN, JOIN, GETTASK,
+SETTASK. Basic operations needed to write a thread management system (such as
+pthreads) implemented as microcoded instructions in the RISC-V ISA.</li>
+<li>Also attempting to define the data structures which contain task queue data.</li>
+<li>Currently looking at lowRISC-style minion cores to implement microcoded
+memory coalescing units.</li>
+<li>Read the GC64 specification doc
+<a href="http://discl.cs.ttu.edu/gitlab/gc64/gc64-doc/tree/master">here</a>.</li>
+</ul>
+
+<h2 id="vector-extension-proposal-krste-asanović:1198e896ab6f8fa7b8bfab04cfcd8c73">Vector Extension Proposal: Krste Asanović</h2>
+
+<ul>
+<li>Goals: efficient and scalable to all reasonable design points. Be a good
+compiler target, and to support implicit auto-vectorisation through OpenMP and
+explicit SPMD (OpenCL) programming models. Want to work with virtualisation
+layers, and fit into the standard 32-bit encoding space.</li>
+<li>Krste is critical of GPUs for general compute. I can summarise his arguments
+here, but the slides will be well worth a read. Krste has spent decades
+working on vector machines.</li>
+<li>With packed SIMD you tend to need completely new instructions for wider
+SIMD. Traditional vector machines allow you to set the vector length register
+to provide a more uniform programming model. This makes loop strip-mining more
+straight-forward.</li>
+<li>Add up to 32 vector data registers (v0-v31) in addition to the basic scalar
+x and f registers. Each vector register is at least 3 elements each, with
+variable bits per element. Also add 8 vector predicate registers, with 1-bit
+per element. Finally, add vector configuration and vector length CSR
+registers.</li>
+<li>Other features
+
+<ul>
+<li>Reconfigurable vector registers allow you to exchange unused architectural
+registers for longer vectors. e.g. if you only need 4 architectural vector
+registers you&rsquo;ll have a larger vector length.</li>
+<li>Mixed-precision support</li>
+<li>Intenger, fixed-point, floating-point arithmetic</li>
+<li>Unit-stride, strided, indexed load/stores</li>
+<li>Predication</li>
+</ul></li>
+<li>Mixed-precision support allows you to subdivide a physical register into
+multiple narrower architectural registers as requested.</li>
+<li>Sam binary code works regardless of number of physical register bits and the
+number of physical lanes.</li>
+<li>Use a polymorphic instruction encoding. e.g. a single signed integer ADD
+opcode that works on different size inputs and outputs.</li>
+<li>Have separate integer and floating-point loads and stores, where the size is
+inherent in the destination register number.</li>
+<li>All instructions are implicitly predicated under the first predicate
+register by default.</li>
+<li>What is the difference between V and Hwacha? Hwacha is a non-standard
+Berkeley vector extensions design to push the state-of-the-art for
+in-order/decoupled vector machines. There are similarities in the lane
+microarchitecture. Current focus is bringing up OpenCL for Hwacha, with the V
+extension to follow.</li>
+<li>Restartable page faults are supported. Similar to the DEC Vector VAX.</li>
+<li>Krste pleads people not to implement a packed SIMD extension, pointing out
+that a minimal V implementation would be very space efficient.</li>
+</ul>
+
+<h2 id="privileged-architecture-proposal-andrew-waterman:1198e896ab6f8fa7b8bfab04cfcd8c73">Privileged Architecture Proposal: Andrew Waterman</h2>
+
+<ul>
+<li>Aims to provide a clean split between layers of the stack.</li>
+<li>You can read the privileged spec
+<a href="http://riscv.org/spec/riscv-privileged-spec-v1.7.pdf">here</a>.</li>
+<li>Supports four privilege modes. User, Supervisor, Hypervisor and Machine
+mode.</li>
+<li>For a simple embedded system that only needs M-mode there is a low
+implementation cost. Only 2^7 bits of architectural state in addition to the
+user ISA, plus 2^7 more bits for timers and another 2^7 for basic performance
+counters.</li>
+<li>Defined the basic virtual memory architectures to support current Unix-style
+operating systems. The design is fairly conventional, using 4KiB pages.</li>
+<li>Why go with 4KiB pages rather than 8KiB as was the initial plan? Concerned
+with porting software hard-coded to expect 4KiB pages. Also concerns about
+internal fragmentation.</li>
+<li>Physical memory attributes such as cacheability are not encoded in the page
+table in RISC-V. Two major reasons that Andrew disagrees with this are that
+the granularity may not be tied to the page size, plus it is problematic for
+virtualisation. Potentially coherent DMA will become more common meaning you
+needn&rsquo;t worry about these attributes.</li>
+<li>Want to support device interactions via a virtio-style interface.</li>
+<li>The draft Supervisor Binary Interface will be released with the next
+privileged ISA draft. It includes common functionality for TLB shootdowns,
+reboot/shutdown, sending inter-processor interrupts etc etc. This is a similar
+idea to the PALCode on the Alpha.</li>
+<li>Hardware-accelerated virtualization (H-mode) is planned, but not yet
+specified.</li>
+<li>A draft version of v1.8 of the spec is expected this summer, with a frozen
+v2.0 targeted for the fall.</li>
+</ul>
+
+<h2 id="rapidio-the-unified-fabric-for-performance-critical-computing-rick-o-connor:1198e896ab6f8fa7b8bfab04cfcd8c73">RapidIO. The Unified Fabric for Performance-Critical Computing: Rick O&rsquo;Connor</h2>
+
+<ul>
+<li>There are more 10Gbps RapidIO ports on the planet than there are 10Gbps
+Ethernet ports. This is primarily due to the 100% market penetration in 4G/LTE
+and 60% global 3G.</li>
+<li>The IIT Madras team are using RapidIO extensively for their RISC-V work</li>
+<li>Has been doing work in the data center and HPC space. Looking to use the AXI
+ACE and connect that to RapidIO.</li>
+<li>There is interesting work on an open source RapidIO stack.</li>
+</ul>
+
+<h2 id="cava-cluster-in-a-rack-peter-hsu:1198e896ab6f8fa7b8bfab04cfcd8c73">CAVA. Cluster in a rack: Peter Hsu</h2>
+
+<ul>
+<li>Problem: designing a new computer is expensive. But 80% is the same every
+time.</li>
+<li>CAVA is not the same as the Oracle RAPID project.</li>
+<li>Would like to build a 1024-node cluster in a rack. DDR4 3200 = 25.6GB/s per
+64-bit channel. Each 1U card would be about 600W with 32 nodes.</li>
+<li>Looking at a 96-core 10nm chip (scaled from a previous 350nm project).<br />
+Suppose you have a 3-issue out of order core (600K gates) and 32KiB I+d cache,
+that would be around 0.24mm^2 in 10nm.</li>
+<li>Estimate a vector unit might be around the same area.</li>
+<li>Peter has detailed estimates for per-chip power, but it&rsquo;s probably best to
+refer to the slides for these.</li>
+<li>Research plan for the cluster involves a unified simulation environment,
+running on generic clusters of x86 using open-source software. Everyone uses
+the same simulator to perform &ldquo;apples to apples&rdquo; comparison. This allows easy
+replication of published work.</li>
+<li>Simulation infrastructure will involve a pipeline siumlator, SoC simulator
+(uncore logic), and a network simulator.</li>
+<li>Interested in applying Cray-style vectors to database workloads</li>
+<li>Could also have the ability to make associativity ways and possible
+individual cache lines lockable.</li>
+</ul>
+
+<p><em>Alex Bradbury</em></p>
+
+                    </section>
+                </article>
+
+        </div>
+    </div>
+    
+
+
+                
+
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                 
+                var disqus_shortname = 'lowrisc'; 
+                var disqus_identifier = "/" + "blog/2015/06/second-risc-v-workshop-day-one";
+                var disqus_title = "Second RISC-V Workshop: Day One";
+                var disqus_url = "http://www.lowrisc.org" + "blog/2015/06/second-risc-v-workshop-day-one";
+
+                 
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+            </div>
+            
+
+<footer class="li-page-footer">
+    <div class="container">
+        <div class="row">
+            <div class="sixteen columns">
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script type="text/javascript">
+    function toggle(id) {
+        var e = document.getElementById(id);
+        e.style.display == 'block' ? e.style.display = 'none' : e.style.display = 'block';
+    }
+    </script>
+    </body>
+</html>
+

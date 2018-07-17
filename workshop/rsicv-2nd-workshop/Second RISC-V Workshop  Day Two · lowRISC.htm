@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+    <head>
+        
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+        <title>Second RISC-V Workshop: Day Two &middot; lowRISC</title>
+        <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' type='text/css'>
+        <link rel="stylesheet" href="http://www.lowrisc.org/libraries/normalize.3.0.1.css" />
+        <link rel="stylesheet" href="http://www.lowrisc.org/css/liquorice.css" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="alternate" href="http://www.lowrisc.org/index.xml" type="application/rss+xml" title="lowRISC" />
+        <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-53520714-1', 'auto');
+        ga('send', 'pageview');
+      </script>
+  </head>
+    <body class="li-body">
+
+<header class="li-page-header">
+  <div class="li-header-top">
+  </div>
+    <div class="container">
+        <div class="row">
+            <div class="sixteen columns">
+                <div class="li-brand li-left">
+                
+                <a href="http://www.lowrisc.org/"><img src="http://www.lowrisc.org/img/lowrisc_header_logo.png"/></a></div>
+                <div class="li-menu li-left">
+                    <span class="li-menu-icon" onclick="javascript:toggle('menu');">&#9776;</span>
+                    <ul id="menu2" class="li-menu-items">
+                        
+                            <li><a href="/"> Home </a></li>
+                        
+                            <li><a href="/about/"> About </a></li>
+                        
+                            <li><a href="/faq/"> FAQ </a></li>
+                        
+                            <li><a href="/docs/"> Docs </a></li>
+                        
+                            <li><a href="/community/"> Community </a></li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="sixteen columns">
+                <ul id="menu" class="li-menu-items li-menu-mobile">
+                    
+                        <li><a href="/"> Home </a></li>
+                    
+                        <li><a href="/about/"> About </a></li>
+                    
+                        <li><a href="/faq/"> FAQ </a></li>
+                    
+                        <li><a href="/docs/"> Docs </a></li>
+                    
+                        <li><a href="/community/"> Community </a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="sixteen columns">
+                <article class="li-article">
+                
+                    <header class="li-article-header">
+                        <h1 class="li-article-title">Second RISC-V Workshop: Day Two</h1>
+                        <span class="li-article-taxonomies">
+                            
+
+                            
+                        </span>
+                        
+                        
+                        <time class="li-article-date">Tuesday, June 30, 2015</time>
+                        
+                    </header>
+                    <section>
+                        
+
+<p>It&rsquo;s the second day of the <a href="http://riscv.org/workshop-jun2015.html">second RISC-V
+workshop</a> today in Berkeley,
+California.  I&rsquo;ll be keeping a semi-live blog of talks and announcements
+throughout the day.</p>
+
+<h2 id="z-scale-tiny-32-bit-risc-v-systems-yunsup-lee:1ef1186fa93d1e56b496df4f0f6ee20f">Z-scale. Tiny 32-bit RISC-V Systems: Yunsup Lee</h2>
+
+<ul>
+<li>Z-Scale is a family of tiny cores, similar in spirit to the ARM Cortex-M
+family. It integrates with the AHB-Lite interconnect.</li>
+<li>Contrast to Rocket (in-order cores, 64-bit, 32-bit, dual-issue options), and
+BOOM (a family of out-of-order cores).</li>
+<li>Z-Scale is a 32-bit 3-stage single-issue in-order pipeline executing the
+RV32IM ISA.</li>
+<li>The instruction bus and data base are 32-bit AHB-Lite buses</li>
+<li>There is a plan to publish a microarchitecture specification to make it easy
+for others to implement an equivalent design in the language of their choice.</li>
+<li>The Zscale is slightly larger than the Cortex-M0 due to having 32 vs 16
+registers, 64-bit performance counters, and a fast multiply and divide. The
+plan is to add an option to generate a Zscale implementing RV32E (i.e. only
+having 16 registers).</li>
+<li>Zscale is only 604 loc in Chisel. 274 lines for control, 267 for the
+datapath, and 63 for the top-level. Combine with 983loc borrowed from Rocket.</li>
+<li>A Verilog implementation of Z-scale is being implemented. It&rsquo;s currently
+1215 lines of code.</li>
+<li>The repo is <a href="https://github.com/ucb-bar/zscale">here</a>, but Yunsup needs to
+do a little more work to make it easily buildable. There will be a blog post
+on the RISC-V site soon.</li>
+<li>All future Rocket development will move to the public
+<a href="https://github.com/ucb-bar/rocket-chip">rocket-chip</a> repo!</li>
+<li>Memory interfaces:
+
+<ul>
+<li>TileLink is the Berkeley cache-coherent interconnect</li>
+<li>NASTI (Berkeley implementation of AXI4)</li>
+<li>HASTI (implementation of AHB-lite)</li>
+<li>POCI (implementation of APB)</li>
+</ul></li>
+<li>The plan is to dump HTIF in Rocket, and add a standard JTAG debug interface.</li>
+<li>Future work for Z-Scale includes a microarchitecture document, improving
+performance, implementing the C extensions, adding an MMU option, and adding
+more devices.</li>
+</ul>
+
+<h2 id="boom-berkeley-out-of-order-machine-chris-celio:1ef1186fa93d1e56b496df4f0f6ee20f">BOOM. Berkeley Out-of-order-Machine: Chris Celio</h2>
+
+<ul>
+<li>BOOM is a (work in progress) superscalar, out-of-order RISC-V processor
+written in Chisel.</li>
+<li>Chris argues there&rsquo;s been a general lack of effort in academia to build and
+evaluate out-of-order designs. As he points out, much research relies on
+software simulators with no area or power numbers.</li>
+<li>Some of the difficult questions for BOOM are which benchmarks to use, and
+how many cycles you need to run. He points out that mapping to FPGA running at
+50MHz, it would take around a day for the SPEC benchmarks for a cluster of
+FPGAs.</li>
+<li>The fact that rs1, rs2, rs3 and rd are always in the same space in the
+RISC-V ISA allows decode and rename to proceed in parallel.</li>
+<li>BOOM supports the full RV64G standard. It benefits from reusing Rocket as a
+library of components.</li>
+<li>BOOM uses explicit renaming, with a unified register file holding both
+x-regs and f-regs (floating point). A unified issue window holds all
+instructions.</li>
+<li>BOOM is synthesisable and hits 2GHz (30 FO4) in TSMC 45nm.</li>
+<li>BOOM is 9kloc of its own code, and pulls in 11.5kloc from other libraries
+(rocket, uncore, floating poing)</li>
+<li>BOOM compares well to an ARM Cortex-A9 and A15 in terms of CoreMark/MHz. A
+4-wide BOOM gives a similar CoreMark/MHz to the A15.</li>
+<li>Future work will look at new applications, a ROCC interface, new
+microarchitecture designs. The plan is to open source by this winter.</li>
+</ul>
+
+<h2 id="fabscalar-risc-v-rangeen-basu-roy-chowdhury:1ef1186fa93d1e56b496df4f0f6ee20f">Fabscalar RISC-V: Rangeen Basu Roy Chowdhury</h2>
+
+<ul>
+<li>A FabScalar RISC-V version should be released in the next few days</li>
+<li>FabScalar generates synthesisable RTL for arbitrary superscalar cores with a
+canonical superscalar template.</li>
+<li>FabScalar uses a library of pipeline stages, providing many different
+designs for each canonical pipeline stage.</li>
+<li>Two chips have been built with FabScalar so far (using PISA).</li>
+<li>The RISC-V port was built on the previous PIA &lsquo;Superset Core&rsquo;. This had
+64-bit instructions and 32-bit address and data.</li>
+<li>For RISC-V FabScalar they have a unified physical register file and unified
+issue queue for floating point (so the FP ALU is treated like just another
+functional unit).</li>
+<li>FabScalar RISC-V will be released as an open source tool complete with
+uncore components and verification infrastructure. It will be available on
+GitHub in the fall.</li>
+<li>The license isn&rsquo;t yet decided, but there&rsquo;s a good chance it will be BSD.</li>
+</ul>
+
+<h2 id="aristotle-a-logically-determined-clockless-risc-v-rv32i-matthew-kim:1ef1186fa93d1e56b496df4f0f6ee20f">Aristotle. A Logically Determined (Clockless) RISC-V RV32I: Matthew Kim</h2>
+
+<ul>
+<li>Two logical values are defined. Data and null (not data). Then define
+threshold operators to produce &lsquo;null convention logic&rsquo;.</li>
+<li>See <a href="https://users.soe.ucsc.edu/~scott/papers/NCL2.pdf">here</a> for more on
+Null Convention Logic</li>
+<li>This results in a system built entirely of combinational logic. I couldn&rsquo;t
+hope to accurately summarise the work here. I&rsquo;m afraid you might be best off
+waiting for the recording.</li>
+<li>Current executing compiled quicksort at approximately 400mips (without
+serious optimisation).</li>
+</ul>
+
+<h2 id="risc-v-erification-prashanth-mundkur:1ef1186fa93d1e56b496df4f0f6ee20f">RISC-V(erification): Prashanth Mundkur</h2>
+
+<ul>
+<li>Current architectures e.g. those from Intel and ARM have large errata sheets
+published semi-regularly. Can we do better for RISC-V?</li>
+<li>Need an unambiguous formal ISA specification which should be coupled to a
+processor implementation amenable to the two, with a formal link between the
+two.</li>
+<li>Currently specifying RISC-V in the <a href="http://www.cl.cam.ac.uk/~acjf3/l3/">L3
+DSL</a>. The interpreter is used as a
+reference oracle for processor implementations.</li>
+<li>The current state of the spec is <a href="https://github.com/pmundkur/l3riscv">available on
+Github</a>.</li>
+<li>The work has already helped to highlight some areas where clarification is
+needed in the written specification</li>
+<li>Next steps would involve support for the compressed instruction set and
+floating point, booting Linux, and using for tandem-verification (e.g. with
+Flue from Bluespec).</li>
+<li>Hope to export usable HOL4 formal definitions, and use that to prove
+information properties (e.g. non-interference and information flow in
+low-level privileged code).</li>
+<li>The talk is now moving to the second half, where Prashanth is presenting
+Nirav Dave&rsquo;s work</li>
+<li>This work is looking at rapidly verifying architectural and
+micro-architectural variants of RISC-V. Rely on translating between
+microarchitectural-states and ISA-level states.</li>
+</ul>
+
+<h2 id="towards-general-purpose-tagged-memory-wei-song:1ef1186fa93d1e56b496df4f0f6ee20f">Towards General-Purpose Tagged Memory: Wei Song</h2>
+
+<ul>
+<li>Wei Song is presenting his <a href="http://www.lowrisc.org/blog/2015/04/lowrisc-tagged-memory-preview-release/">work on tagged memory support in
+lowRISC</a>.<br />
+I&rsquo;ll post the slides shortly.</li>
+</ul>
+
+<h2 id="raven3-a-28nm-risc-v-vector-processor-with-on-chip-dc-dc-convertors-brian-zimmer:1ef1186fa93d1e56b496df4f0f6ee20f">Raven3, a 28nm RISC-V Vector Processor with On-Chip DC/DC Convertors: Brian Zimmer</h2>
+
+<ul>
+<li>Support dynamic voltage and frequency scaling on-chip with no off-chip
+components.</li>
+<li>Want to switch all converters simultaneously to avoid charge sharing. The
+clock frequency adapts to track the voltage ripple.</li>
+<li>Raven has a RISC-V scalar core, vector accelerator. 16KB scalar instruction
+cache, 32KB shared data cache, and 8KB instruction cache. This has a 1.19mm^2
+area.</li>
+<li>The converter area is 0.19mm^2</li>
+<li>The chip was wire-bonded on to a daughter-board, which was then connected to
+a larger motherboard connected to a Zedboard</li>
+<li>Converter transitions are less than 20ns, which allows extremely
+fine-grained DVFS.</li>
+<li>Raven3 showed 80% efficiency across a wide voltage range and achieved
+26GFLOPS/W using the on-chip conversion.</li>
+</ul>
+
+<h2 id="evaluating-risc-v-cores-for-pulp-an-open-parallel-ultra-low-power-platform-sven-stucki:1ef1186fa93d1e56b496df4f0f6ee20f">Evaluating RISC-V Cores for PULP. An Open Parallel Ultra-Low-Power Platform : Sven Stucki</h2>
+
+<ul>
+<li>Approximately 40 people working on PULP in some way</li>
+<li>Ultimate (ambitious) goal is one 1GOPS/mW (or 1pJ/op). Also hope to achieve
+energy proportionality.</li>
+<li>Plan is to be open source on GitHub</li>
+<li>PULP has been silicon-proven in 28nm, 65nm, 130nm and 180nm. The team have
+tape-outs planned through to 2016.</li>
+<li>Sven has replaced the OpenRISC frontend with a RISC-V decoder, hoping to
+take advantage of the more active community and compressed instruction set
+support.</li>
+<li>PULP is a simple 4-stage design supporting RV32IC as well as the mul
+instruction from the M extension.</li>
+<li>Synthesising for UMC65, they see 22kilo-gate equivalent per core</li>
+<li>The OR10N core was a new OpenRISC implementation with support for hardware
+loops, pre/postincrement memory access and vector instructions.</li>
+<li>Heading for a GlobalFoundries 28nm tapeout in Q4 2015</li>
+<li>See more on PULP <a href="http://iis-projects.ee.ethz.ch/index.php/PULP">at the
+website</a>.</li>
+</ul>
+
+<p><em>Alex Bradbury</em></p>
+
+                    </section>
+                </article>
+
+        </div>
+    </div>
+    
+
+
+                
+
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                 
+                var disqus_shortname = 'lowrisc'; 
+                var disqus_identifier = "/" + "blog/2015/06/second-risc-v-workshop-day-two";
+                var disqus_title = "Second RISC-V Workshop: Day Two";
+                var disqus_url = "http://www.lowrisc.org" + "blog/2015/06/second-risc-v-workshop-day-two";
+
+                 
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+            </div>
+            
+
+<footer class="li-page-footer">
+    <div class="container">
+        <div class="row">
+            <div class="sixteen columns">
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script type="text/javascript">
+    function toggle(id) {
+        var e = document.getElementById(id);
+        e.style.display == 'block' ? e.style.display = 'none' : e.style.display = 'block';
+    }
+    </script>
+    </body>
+</html>
+
